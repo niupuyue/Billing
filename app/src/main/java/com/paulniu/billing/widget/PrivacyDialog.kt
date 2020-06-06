@@ -11,6 +11,7 @@ import com.paulniu.bill_base_lib.util.SPUtil
 import com.paulniu.bill_base_lib.util.StringControlUtil
 import com.paulniu.billing.Constant
 import com.paulniu.billing.R
+import com.paulniu.billing.listener.IPrivacyDialogListener
 import kotlinx.android.synthetic.main.view_dialog_privacy.*
 
 /**
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.view_dialog_privacy.*
  * desc: 用户首次使用的隐私权政策弹窗
  */
 class PrivacyDialog constructor(context: Context) : Dialog(context) {
+
+    private var mListener: IPrivacyDialogListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,15 @@ class PrivacyDialog constructor(context: Context) : Dialog(context) {
             // 更改SP
             SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
                 ?.put(Constant.SP_KEY_SHOW_PRIVACY_DIALOG, true)
+            mListener?.onAgree()
+        }
+
+        privacy_dialog_disagree_tv.setOnClickListener {
+            // 点击不同意按钮
+            if (isShowing){
+                dismiss()
+            }
+            mListener?.onDisagree()
         }
 
         // 设置用户隐私政策的点击事件
@@ -65,6 +77,10 @@ class PrivacyDialog constructor(context: Context) : Dialog(context) {
                 }
 
             })
+    }
+
+    fun setPrivacyDialogListener(listener:IPrivacyDialogListener){
+        this.mListener = listener
     }
 
 }
