@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_privacy_dialog_bg"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/privacy_dialog_title_tv"
