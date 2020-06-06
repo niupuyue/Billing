@@ -17,7 +17,7 @@
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|smallestScreenSize|touchscreen"
             android:hardwareAccelerated="true"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppThemeFullScreen"
+            android:theme="@style/AppThemeWhiteNoTitle"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,12 +28,7 @@
         <!-- 主页面 -->
         <activity
             android:name=".business.MainActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|smallestScreenSize|touchscreen"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppThemeNotitle"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
