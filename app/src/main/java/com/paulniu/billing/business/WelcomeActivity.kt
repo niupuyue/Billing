@@ -21,11 +21,19 @@ import kotlinx.android.synthetic.main.activity_welcome.*
  */
 class WelcomeActivity : AppCompatActivity() {
 
+    private var isStop = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
         initData()
+    }
+
+    override fun onStop() {
+        // 执行onStop方法时，不再执行跳转操作
+        isStop = true
+        super.onStop()
     }
 
     private fun initData() {
@@ -51,10 +59,10 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                val intent = Intent(this@WelcomeActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-                Log.e("NPL", "动画执行结束")
+                if (!isStop) {
+                    startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
+                    finish()
+                }
             }
 
             override fun onAnimationCancel(animation: Animator?) {

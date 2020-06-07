@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 部分主体颜色 -->
+    <color name="color_52A5D0">#52A5D0</color>
+
+    <color name="white">#FFFFFF</color>
+
     <color name="color_212121">#212121</color>
     <color name="color_515559">#515559</color>
     <color name="color_5F7D8C">#5F7D8C</color>
     <color name="color_53B3F4">#53B3F4</color>
     <color name="color_FFFFFF">#FFFFFF</color>
+
     
 </resources>
