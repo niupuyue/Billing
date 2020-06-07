@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Billing</string>
+
+    <!-- 隐私权县弹窗 -->
     <string name="privacy_dialog_title">至，亲爱的用户</string>
     <string name="privacy_dialog_subtitle">感谢您使用IYing记账助手。</string>
     <string name="privacy_dialog_content">我们非常重视对您个人隐私的保护！为了更好地保护您的个人权益，在使用我们的产品前，请认真阅读《服务协议》，《隐私协议》的内容，同意并接受后我们将为你提供最优质的服务，我们会严格按照政策内容使用和保护您的个人信息，感谢您的信任！</string>
     <string name="privacy_dialog_disgree">不同意</string>
     <string name="privacy_dialog_agree">同意开始使用</string>
+    <!-- 主页面 -->
     <string name="maint_activity_nav_header_name_title">爱英小可爱</string>
     <string name="main_activity_nav_header_motto">留下自己的座右铭吧~</string>
     <string name="main_activity_nav_drawer_home">账本</string>
@@ -12,4 +15,7 @@
     <string name="main_activity_nav_drawer_report">报表</string>
     <string name="main_activity_nav_drawer_setting">设置</string>
     <string name="main_activity_nav_drawer_night">夜间</string>
+    <string name="main_activity_nav_open">打开</string>
+    <string name="main_activity_nav_close">关闭</string>
+
 </resources>
