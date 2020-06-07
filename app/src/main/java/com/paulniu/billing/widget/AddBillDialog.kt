@@ -45,25 +45,6 @@ class AddBillDialog(context: Context, listenner: IAddBillListener) : Dialog(cont
         }
 
         btn_add.setOnClickListener {
-            var bill = BillBean()
-            bill.id = null?.toLong()
-            bill.type = when {
-                TextUtils.equals(add_bill_dialog_type_et.text, "100") -> TypeBean(
-                    100L,
-                    "吃饭"
-                )
-                TextUtils.equals(add_bill_dialog_type_et.text, "101") -> TypeBean(
-                    101L,
-                    "公交"
-                )
-                else -> TypeBean(99L, "其他")
-            }
-            bill.typeId = bill.type.id
-            bill.money = add_bill_dialog_money_et.text.toString().toFloat()
-            bill.title = add_bill_dialog_title_et.text.toString()
-            bill.time = System.currentTimeMillis()
-            mListener?.onAddBill(bill)
-            dismiss()
         }
     }
 

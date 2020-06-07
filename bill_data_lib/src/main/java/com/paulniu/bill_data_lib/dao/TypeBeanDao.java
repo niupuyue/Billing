@@ -25,7 +25,9 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
+        public final static Property IconRes = new Property(1, int.class, "iconRes", false, "ICON_RES");
+        public final static Property Title = new Property(2, String.class, "title", false, "TITLE");
+        public final static Property BaseType = new Property(3, int.class, "baseType", false, "BASE_TYPE");
     }
 
 
@@ -42,7 +44,9 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"TYPE_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"TITLE\" TEXT);"); // 1: title
+                "\"ICON_RES\" INTEGER NOT NULL ," + // 1: iconRes
+                "\"TITLE\" TEXT," + // 2: title
+                "\"BASE_TYPE\" INTEGER NOT NULL );"); // 3: baseType
     }
 
     /** Drops the underlying database table. */
@@ -59,11 +63,13 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getIconRes());
  
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(2, title);
+            stmt.bindString(3, title);
         }
+        stmt.bindLong(4, entity.getBaseType());
     }
 
     @Override
@@ -74,11 +80,13 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getIconRes());
  
         String title = entity.getTitle();
         if (title != null) {
-            stmt.bindString(2, title);
+            stmt.bindString(3, title);
         }
+        stmt.bindLong(4, entity.getBaseType());
     }
 
     @Override
@@ -90,7 +98,9 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
     public TypeBean readEntity(Cursor cursor, int offset) {
         TypeBean entity = new TypeBean( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // title
+            cursor.getInt(offset + 1), // iconRes
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // title
+            cursor.getInt(offset + 3) // baseType
         );
         return entity;
     }
@@ -98,7 +108,9 @@ public class TypeBeanDao extends AbstractDao<TypeBean, Long> {
     @Override
     public void readEntity(Cursor cursor, TypeBean entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setIconRes(cursor.getInt(offset + 1));
+        entity.setTitle(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setBaseType(cursor.getInt(offset + 3));
      }
     
     @Override

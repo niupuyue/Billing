@@ -9,11 +9,20 @@ import com.paulniu.bill_base_lib.base.App
  * time:2020/5/31 7:11 PM
  * desc:
  */
-class BillApp: App() {
+class BillApp : App() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.e("NPL","执行了BillApp-onCreate方法")
+
+        initDatabase()
+
+    }
+
+    /**
+     * 初始化类型数据库
+     */
+    private fun initDatabase() {
+
     }
 
 }

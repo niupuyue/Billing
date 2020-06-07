@@ -32,7 +32,8 @@
         <!-- 添加账单页面 -->
         <activity
             android:name=".business.AddBillingActivity"
-            android:theme="@style/AppThemeWhiteNoTitle" />
+            android:theme="@style/AppThemeWhiteNoTitle"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <!-- 设置页面 -->
         <activity
             android:name=".business.SettingActivity"
