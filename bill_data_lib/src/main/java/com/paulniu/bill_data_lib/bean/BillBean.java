@@ -4,6 +4,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.DaoException;
 import com.paulniu.bill_data_lib.dao.DaoSession;
@@ -25,7 +26,7 @@ public class BillBean {
     public Long typeId;
     // 单项关联表
     @ToOne(joinProperty = "typeId")
-    public TypeBean type;
+    public TypeBean typeBean;
     public long time;
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -33,8 +34,6 @@ public class BillBean {
     /** Used for active entity operations. */
     @Generated(hash = 1884953332)
     private transient BillBeanDao myDao;
-    @Generated(hash = 506996655)
-    private transient Long type__resolvedKey;
     @Generated(hash = 1863371532)
     public BillBean(Long id, String title, float money, Long typeId, long time) {
         this.id = id;
@@ -45,6 +44,12 @@ public class BillBean {
     }
     @Generated(hash = 562884989)
     public BillBean() {
+    }
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     public String getTitle() {
         return this.title;
@@ -70,37 +75,33 @@ public class BillBean {
     public void setTime(long time) {
         this.time = time;
     }
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Generated(hash = 638861748)
+    private transient Long typeBean__resolvedKey;
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 740562233)
-    public TypeBean getType() {
+    @Generated(hash = 1261509980)
+    public TypeBean getTypeBean() {
         Long __key = this.typeId;
-        if (type__resolvedKey == null || !type__resolvedKey.equals(__key)) {
+        if (typeBean__resolvedKey == null || !typeBean__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             TypeBeanDao targetDao = daoSession.getTypeBeanDao();
-            TypeBean typeNew = targetDao.load(__key);
+            TypeBean typeBeanNew = targetDao.load(__key);
             synchronized (this) {
-                type = typeNew;
-                type__resolvedKey = __key;
+                typeBean = typeBeanNew;
+                typeBean__resolvedKey = __key;
             }
         }
-        return type;
+        return typeBean;
     }
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1824632774)
-    public void setType(TypeBean type) {
+    @Generated(hash = 1987593041)
+    public void setTypeBean(TypeBean typeBean) {
         synchronized (this) {
-            this.type = type;
-            typeId = type == null ? null : type.getId();
-            type__resolvedKey = typeId;
+            this.typeBean = typeBean;
+            typeId = typeBean == null ? null : typeBean.getId();
+            typeBean__resolvedKey = typeId;
         }
     }
     /**

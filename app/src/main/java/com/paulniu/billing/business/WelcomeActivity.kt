@@ -51,7 +51,6 @@ class WelcomeActivity : AppCompatActivity() {
         val textAnimator = ValueAnimator.ofInt(0, 7).setDuration(3000)
         textAnimator.addUpdateListener { animation ->
             val index = animation.animatedValue as Int
-            Log.e("NPL", "下标为${index}")
             welcome_activity_center_title_tv.text = loadText[index % loadText.size]
         }
         textAnimator.addListener(object : Animator.AnimatorListener {

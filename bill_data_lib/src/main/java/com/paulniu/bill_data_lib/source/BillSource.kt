@@ -18,7 +18,7 @@ object BillSource {
     /**
      * 插入或更新账单信息
      */
-    fun addOrUpdateBill(bill: BillBean):Long {
+    fun addOrUpdateBill(bill: BillBean): Long {
         return AppDataBase.daoSession.insertOrReplace(bill)
     }
 
@@ -33,6 +33,7 @@ object BillSource {
      * 查询所有的账单信息
      */
     fun queryAllBill(): List<BillBean> {
+        AppDataBase.daoSession.clear()
         return AppDataBase.daoSession.queryBuilder(BillBean::class.java).build().list()
     }
 
@@ -40,6 +41,7 @@ object BillSource {
      * 根据id查询账单信息
      */
     fun queryByBillId(id: Long): BillBean {
+        AppDataBase.daoSession.clear()
         return AppDataBase.daoSession.queryBuilder(BillBean::class.java)
             .where(BillBeanDao.Properties.Time.eq(id)) as BillBean
     }
@@ -87,7 +89,7 @@ object BillSource {
             .where(
                 BillBeanDao.Properties.Time.ge(dateArray[0]),
                 BillBeanDao.Properties.Time.le(dateArray[1])
-            ).offset(page * count).limit(count)
+            ).offset((page - 1) * count).limit(count)
             .orderDesc(BillBeanDao.Properties.Time).build().list()
     }
 

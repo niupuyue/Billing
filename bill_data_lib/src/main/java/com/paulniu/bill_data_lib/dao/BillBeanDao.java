@@ -186,8 +186,8 @@ public class BillBeanDao extends AbstractDao<BillBean, Long> {
         BillBean entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
 
-        TypeBean type = loadCurrentOther(daoSession.getTypeBeanDao(), cursor, offset);
-        entity.setType(type);
+        TypeBean typeBean = loadCurrentOther(daoSession.getTypeBeanDao(), cursor, offset);
+        entity.setTypeBean(typeBean);
 
         return entity;    
     }

@@ -21,7 +21,7 @@ public class TypeBean {
     public int baseType;
 
     @Transient
-    public boolean isSelected;
+    public boolean isSelected = false;
 
     public int getBaseType() {
         return baseType;

@@ -17,5 +17,6 @@
     <string name="main_activity_nav_drawer_night">夜间</string>
     <string name="main_activity_nav_open">打开</string>
     <string name="main_activity_nav_close">关闭</string>
+    <string name="add_bill_activity_submit">确定</string>
 
 </resources>

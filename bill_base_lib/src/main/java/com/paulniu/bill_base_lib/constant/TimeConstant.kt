@@ -12,4 +12,6 @@ object TimeConstant {
 
     const val TYPE_YEAR_MONTH_DAY_HOUR_MIN = "yyyy年MM月dd日 HH:mm"
 
+    const val TYPE_MONTH_DAY = "MM/dd"
+
 }

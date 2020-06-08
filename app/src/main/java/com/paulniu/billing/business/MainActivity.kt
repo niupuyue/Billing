@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toolbar
@@ -12,22 +13,43 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
+import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
 import com.paulniu.bill_data_lib.bean.BillBean
 import com.paulniu.billing.R
+import com.paulniu.billing.adapter.MainBillListAdapter
 import com.paulniu.billing.database.source.BillSource
+import com.paulniu.billing.listener.IMainBillListListener
 import com.paulniu.billing.widget.AddBillDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.main_activity_bar_main.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IMainBillListListener {
+
+    private var mBillList = ArrayList<BillBean>()
+
+    private val eventBus by lazy {
+        EventBus.getDefault()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        eventBus.register(this)
         initView()
         initListener()
         initData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        eventBus.removeStickyEvent(AddBillSuccessEvent::class.java)
+        eventBus.unregister(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -51,6 +73,14 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 需要处理侧滑窗口
         super.onBackPressed()
+    }
+
+    override fun onClick(position: Int) {
+        // 点击其中的一个，跳转到可以编辑和修改页面
+    }
+
+    override fun onLongClick(position: Int) {
+        // 长恩显示删除弹窗
     }
 
     private fun initView() {
@@ -108,8 +138,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initData(){
+    private fun initData() {
+        // 从数据库中获取数据
+        mBillList = BillSource.queryByMonthBills() as ArrayList<BillBean>
+        main_activity_recyclerview.adapter = MainBillListAdapter(this, mBillList, this)
+        main_activity_recyclerview.layoutManager = LinearLayoutManager(this)
+    }
 
+    private fun formatAnalysisCard() {
+        main_activity_analysis_simple_card.visibility = View.VISIBLE
+    }
+
+    /**
+     * 将账单信息根据
+     */
+    private fun formatBillData() {
+        if (mBillList.isEmpty()) {
+            return
+        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun addBillSuccess(event: AddBillSuccessEvent) {
+        if (null != event) {
+            initData()
+        }
     }
 
 

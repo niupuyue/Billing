@@ -23,17 +23,33 @@
             android:background="@mipmap/app_icon_back_black" />
 
         <TextView
+            android:id="@+id/add_bill_activity_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:text=""
             android:textColor="@color/color_212121"
             android:textSize="15sp"
             tools:text="06/07 周日" />
+
+        <TextView
+            android:id="@+id/add_bill_activity_submit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/shape_add_bill_submit_bg"
+            android:paddingLeft="15dp"
+            android:paddingTop="8dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="8dp"
+            android:text="@string/add_bill_activity_submit"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
