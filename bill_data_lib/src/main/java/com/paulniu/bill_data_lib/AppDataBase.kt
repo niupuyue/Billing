@@ -1,12 +1,21 @@
 package com.paulniu.billing.database
 
-import com.github.yuweiguocn.library.greendao.MigrationHelper
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.paulniu.bill_base_lib.constant.Constant
-import com.paulniu.bill_base_lib.base.App
-import com.paulniu.bill_data_lib.BuildConfig
-import com.paulniu.bill_data_lib.MySqliteHelper
-import com.paulniu.bill_data_lib.dao.DaoMaster
-import com.paulniu.bill_data_lib.dao.DaoSession
+import com.paulniu.bill_data_lib.bean.BaseType
+import com.paulniu.bill_data_lib.bean.BillInfo
+import com.paulniu.bill_data_lib.bean.TypeInfo
+import com.paulniu.bill_data_lib.converters.Converters
+import com.paulniu.bill_data_lib.dao.BaseTypeDao
+import com.paulniu.bill_data_lib.dao.BillInfoDao
+import com.paulniu.bill_data_lib.dao.TypeInfoDao
+
 
 /**
  * @author:Niu Puyue
@@ -14,20 +23,42 @@ import com.paulniu.bill_data_lib.dao.DaoSession
  * time:2020/5/31 5:30 PM
  * desc: 数据库操作基类,所有获取数据库操作对象的Session全部从此处获取
  */
-object AppDataBase {
+@Database(entities = [BaseType::class, TypeInfo::class, BillInfo::class], version = 1)
+@TypeConverters(Converters::class)
+abstract class AppDataBase : RoomDatabase() {
 
-    @JvmStatic
-    lateinit var daoSession: DaoSession
+    companion object {
+        private var INSTANCE: AppDataBase? = null
 
-    init {
-        // 判断是否是Debug模式
-        MigrationHelper.DEBUG = BuildConfig.DEBUG
-        // 创建数据库
-        val mySqliteHelper = MySqliteHelper(App.INSTANCE!!, Constant.SQLITE_NAME)
-        // 声明一个Sqlite
-        val db = mySqliteHelper.writableDb
-        val daoMaster = DaoMaster(db)
-        daoSession = daoMaster.newSession()
+        // 数据库升级
+        val mirgration_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+
+            }
+
+        }
+
+        @Synchronized
+        fun getInstance(context: Context): AppDataBase {
+            if (null == INSTANCE) {
+                INSTANCE = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDataBase::class.java,
+                    Constant.SQLITE_NAME
+                )
+                    .setJournalMode(JournalMode.TRUNCATE)
+                    .allowMainThreadQueries()
+                    .addMigrations(mirgration_1_2)
+                    .build()
+            }
+            return INSTANCE!!
+        }
     }
+
+    abstract fun billInfoDao(): BillInfoDao
+
+    abstract fun typeInfoDao(): TypeInfoDao
+
+    abstract fun baseTypeDao(): BaseTypeDao
 
 }

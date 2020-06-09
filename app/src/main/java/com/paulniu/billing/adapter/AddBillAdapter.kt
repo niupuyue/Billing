@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.paulniu.bill_data_lib.bean.TypeBean
+import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IAddBillSelectListener
 import kotlinx.android.synthetic.main.view_add_bill_item.view.*
@@ -22,13 +22,13 @@ import kotlinx.android.synthetic.main.view_add_bill_item.view.*
  */
 class AddBillAdapter(
     context: Context,
-    types: ArrayList<TypeBean>,
+    types: ArrayList<TypeInfo>,
     listener: IAddBillSelectListener
 ) :
     RecyclerView.Adapter<AddBillAdapter.AddBillViewHolder>() {
 
     private var context: Context? = null
-    private var mTypes = ArrayList<TypeBean>()
+    private var mTypes = ArrayList<TypeInfo>()
     private var mListener: IAddBillSelectListener? = null
 
     init {
@@ -50,7 +50,7 @@ class AddBillAdapter(
     override fun onBindViewHolder(holder: AddBillViewHolder, position: Int) {
         holder.add_bill_item_title.text = mTypes[position].title
         holder.add_bill_item_icon.background =
-            ContextCompat.getDrawable(context!!, mTypes[position].iconRes)
+            ContextCompat.getDrawable(context!!, mTypes[position].iconRes!!)
         holder.add_bill_item_container.background = ContextCompat.getDrawable(
             context!!,
             if (mTypes[position].isSelected) R.drawable.add_bill_item_selected_bg else R.drawable.add_bill_item_unselected_bg

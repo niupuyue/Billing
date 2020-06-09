@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -12,6 +12,12 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -26,19 +32,6 @@ android {
 
 }
 
-greendao {
-    //数据库版本号
-    schemaVersion 1
-    // 设置DaoMaster、DaoSession、Dao 包名
-    daoPackage 'com.paulniu.bill_data_lib.dao'
-    //设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
-    targetGenDir 'src/main/java'
-    //设置为true以自动生成单元测试。
-    generateTests false
-    //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
-    targetGenDirTests 'src/main/java'
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -51,7 +44,11 @@ dependencies {
     // 本地依赖库
     api project(':bill_base_lib')
 
-    implementation 'org.greenrobot:greendao:3.2.2'
-    //数据库升级防止丢失数据
-    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    // room
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+
+    // Gson
+    api 'com.google.code.gson:gson:2.8.6'
 }

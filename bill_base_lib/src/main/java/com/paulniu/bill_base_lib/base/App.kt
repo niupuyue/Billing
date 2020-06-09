@@ -1,6 +1,7 @@
 package com.paulniu.bill_base_lib.base
 
 import android.app.Application
+import android.content.Context
 
 /**
  * @author:Niu Puyue
@@ -11,12 +12,18 @@ import android.app.Application
 open class App : Application() {
 
     companion object {
-        var INSTANCE:App ?= null
+        @JvmStatic
+        private var context: Context? = null
+
+        @JvmStatic
+        fun getAppContext(): Context {
+            return context!!
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        INSTANCE = this
+        context = this
     }
 
 }

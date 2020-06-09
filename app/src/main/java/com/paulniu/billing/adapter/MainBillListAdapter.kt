@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.paulniu.bill_base_lib.util.TimeUtil
-import com.paulniu.bill_data_lib.bean.BillBean
+import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IMainBillListListener
 import kotlinx.android.synthetic.main.main_activity_bill_list_item.view.*
@@ -24,12 +24,12 @@ import kotlinx.android.synthetic.main.main_activity_bill_list_item_title.view.*
  */
 class MainBillListAdapter(
     context: Context,
-    bills: ArrayList<BillBean>,
+    bills: ArrayList<BillInfo>,
     listener: IMainBillListListener
 ) : RecyclerView.Adapter<MainBillListAdapter.BillListViewHolder>() {
 
     private var mContext: Context? = null
-    private var mBillList: ArrayList<BillBean>? = null
+    private var mBillList: ArrayList<BillInfo>? = null
     private var mListener: IMainBillListListener? = null
 
     companion object {
@@ -75,7 +75,7 @@ class MainBillListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mBillList!![position].id <= 0) {
+        return if (mBillList!![position].id!! <= 0) {
             TYPE_DATE
         } else {
             TYPE_BILL
@@ -86,10 +86,10 @@ class MainBillListAdapter(
         if (holder is MainBillListViewHolder) {
             val mainBill = mBillList?.get(position)
             mainBill?.run {
-                if (null != typeBean) {
+                if (null != typeInfo) {
                     holder.billListItemIcon.background =
-                        ContextCompat.getDrawable(mContext!!, typeBean!!.iconRes)
-                    holder.billListItemTitle.text = typeBean!!.title
+                        ContextCompat.getDrawable(mContext!!, typeInfo!!.iconRes!!)
+                    holder.billListItemTitle.text = typeInfo!!.title
                 }
                 holder.billListItemMoney.text = money.toString()
             }

@@ -5,10 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Gravity
-import com.paulniu.bill_data_lib.bean.BillBean
-import com.paulniu.bill_data_lib.bean.TypeBean
+import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
 import kotlinx.android.synthetic.main.view_add_bill_dialog.*
 
@@ -49,7 +47,7 @@ class AddBillDialog(context: Context, listenner: IAddBillListener) : Dialog(cont
     }
 
     interface IAddBillListener {
-        fun onAddBill(billBean: BillBean)
+        fun onAddBill(billInfo: BillInfo)
     }
 
 }

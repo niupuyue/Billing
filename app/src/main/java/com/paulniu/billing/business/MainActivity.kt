@@ -7,21 +7,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toolbar
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationView
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
-import com.paulniu.bill_data_lib.bean.BillBean
+import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.MainBillListAdapter
-import com.paulniu.billing.database.source.BillSource
+import com.paulniu.billing.database.BillSource
 import com.paulniu.billing.listener.IMainBillListListener
-import com.paulniu.billing.widget.AddBillDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.main_activity_bar_main.*
@@ -31,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : AppCompatActivity(), IMainBillListListener {
 
-    private var mBillList = ArrayList<BillBean>()
+    private var mBillList = ArrayList<BillInfo>()
 
     private val eventBus by lazy {
         EventBus.getDefault()
@@ -140,7 +135,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
 
     private fun initData() {
         // 从数据库中获取数据
-        mBillList = BillSource.queryByMonthBills() as ArrayList<BillBean>
+        mBillList = BillSource.queryBillByMonth() as ArrayList<BillInfo>
         main_activity_recyclerview.adapter = MainBillListAdapter(this, mBillList, this)
         main_activity_recyclerview.layoutManager = LinearLayoutManager(this)
     }

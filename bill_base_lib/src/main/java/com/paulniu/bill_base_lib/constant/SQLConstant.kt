@@ -8,5 +8,6 @@ package com.paulniu.bill_base_lib.constant
  */
 object SQLConstant {
 
+    const val sql1 = "select "
 
 }

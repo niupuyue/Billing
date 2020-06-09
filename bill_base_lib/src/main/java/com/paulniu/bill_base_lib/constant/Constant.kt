@@ -8,7 +8,7 @@ package com.paulniu.bill_base_lib.constant
  */
 object Constant {
 
-    const val SQLITE_NAME = "billing_db"
+    const val SQLITE_NAME = "billing.db"
 
 
 

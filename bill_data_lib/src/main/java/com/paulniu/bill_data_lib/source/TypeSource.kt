@@ -1,8 +1,10 @@
 package com.paulniu.bill_data_lib.source
 
-import com.paulniu.bill_data_lib.bean.TypeBean
-import com.paulniu.bill_data_lib.dao.TypeBeanDao
+import android.text.TextUtils
+import com.paulniu.bill_base_lib.base.App
+import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.billing.database.AppDataBase
+
 
 /**
  * @author:Niu Puyue
@@ -13,28 +15,48 @@ import com.paulniu.billing.database.AppDataBase
 object TypeSource {
 
     /**
-     * 插入或更新账单类型
+     * 插入或者更新类型
      */
-    fun addOrUpdateBillType(type: TypeBean) {
-        AppDataBase.daoSession.clear()
-        AppDataBase.daoSession.insertOrReplace(type)
+    @JvmStatic
+    fun addOrUpdate(typeInfo: TypeInfo) {
+        if (typeInfo.id!! < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+            return
+        }
+        AppDataBase.getInstance(App.getAppContext()).typeInfoDao().addOrUpdate(typeInfo)
     }
 
     /**
-     * 获取所有的账单类型
+     * 执行插入操作
      */
-    fun queryBillType(): List<TypeBean> {
-        AppDataBase.daoSession.clear()
-        return AppDataBase.daoSession.queryBuilder(TypeBean::class.java).build().list()
+    @JvmStatic
+    fun addTypeInfo(typeInfo: TypeInfo){
+        if (typeInfo.id!! < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+            return
+        }
+        AppDataBase.getInstance(App.getAppContext()).typeInfoDao().insert(typeInfo)
     }
 
     /**
-     * 根据id获取对应的账单类型
+     * 根据baseType获取typeInfo对象
      */
-    fun queryBillById(id: Long): TypeBean {
-        AppDataBase.daoSession.clear()
-        return AppDataBase.daoSession.queryBuilder(TypeBean::class.java)
-            .where(TypeBeanDao.Properties.Id.eq(id)).build().list().first()
+    @JvmStatic
+    fun queryTypeInfosByBaseType(baseTypeId: Int): List<TypeInfo>? {
+        if (baseTypeId < 0) {
+            return null
+        }
+        return AppDataBase.getInstance(App.getAppContext()).typeInfoDao()
+            .queryTypeInfosByBaseType(baseTypeId)
+    }
+
+    /**
+     * 根据typeInfo的id获取typeInfo对象
+     */
+    @JvmStatic
+    fun queryTypeInfoById(id: Int): TypeInfo? {
+        if (id < 0) {
+            return null
+        }
+        return AppDataBase.getInstance(App.getAppContext()).typeInfoDao().queryTypeInfoById(id)
     }
 
 }
