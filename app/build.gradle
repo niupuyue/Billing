@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -10,23 +11,111 @@ android {
         applicationId "com.paulniu.billing"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode = 100
+        versionName = "1.0.0"
+        flavorDimensions "app"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        live {
+            storeFile file("iying_bill.jks")
+            storePassword "930904"
+            keyAlias "iying"
+            keyPassword "iying930904"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        dev {
+            storeFile file('test.jks')
+            storePassword "123123"
+            keyAlias "123123"
+            keyPassword "123123"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         release {
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            zipAlignEnabled false
+            debuggable true
+            jniDebuggable true
+            signingConfig release.signingConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    // 添加多渠道后理论上应该把项目中所有集成的 sdk 都做区分
+    productFlavors {
+        live {
+            dimension = 'app'
+            versionCode versionCode
+            versionName versionName
+            resValue("string", "app_name", "爱英记账")
+            signingConfig signingConfigs.live
+        }
+        dev {
+            dimension = 'app'
+            applicationIdSuffix ".dev"
+            versionNameSuffix "_${getFormatTime()}.dev-server"
+            versionCode versionCode
+            versionName versionName
+            resValue("string", "app_name", "爱英记账Dev")
+            signingConfig signingConfigs.live
+        }
+    }
+
+    // 打包输出文件命名规则
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def versionName = variant.versionName
+            if (!versionName.contains(getFormatTime())) {
+                versionName += "_" + getFormatTime()
+            }
+            outputFileName = "IYing_Bill_v${versionName}.apk"
         }
     }
 
 }
 
+static def getFormatTime() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy_MM_dd')
+    return formattedDate
+}
 
-
+//配置签名文件
+def getSigningProperties() {
+    File propFile = file('signing.properties')
+    if (propFile.exists()) {
+        Properties props = new Properties()
+        props.load(new FileInputStream(propFile))
+        if (props.containsKey('STORE_FILE') &&
+                props.containsKey('STORE_PASSWORD') &&
+                props.containsKey('KEY_ALIAS') &&
+                props.containsKey('KEY_PASSWORD')) {
+            android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+            android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+            android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+            android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+        } else {
+            android.buildTypes.release.signingConfig = null
+        }
+    } else {
+        android.buildTypes.release.signingConfig = null
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -44,9 +133,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-    /*EventBus*/
-    implementation 'org.greenrobot:eventbus:3.1.1'
 
     // 本地依赖库
     implementation project(':bill_data_lib')

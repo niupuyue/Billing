@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Billing</string>
 
     <!-- 隐私权县弹窗 -->
     <string name="privacy_dialog_title">至，亲爱的用户</string>
