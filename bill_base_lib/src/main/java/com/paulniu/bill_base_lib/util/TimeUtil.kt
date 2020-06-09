@@ -13,6 +13,61 @@ import java.util.*
 object TimeUtil {
 
     /**
+     * 获取当前的年份
+     */
+    fun getYear(time: Long = System.currentTimeMillis()): Int {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(time)
+        return calendar.get(Calendar.YEAR)
+    }
+
+    /**
+     * 获取当前的月份
+     */
+    fun getMonth(time: Long = System.currentTimeMillis()): Int {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(time)
+        return calendar.get(Calendar.MONTH)
+    }
+
+    /**
+     * 获取当前的天
+     */
+    fun getDay(time: Long = System.currentTimeMillis()): Int {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(time)
+        return calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+    /**
+     * 计算某一天的当前时间
+     */
+    fun getCurrentTimeByDay(year: Int, month: Int, day: Int): Long {
+        val calendar = Calendar.getInstance()
+        val tempOffset = System.currentTimeMillis() - getDayStartAndEnd()[0]
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        return calendar.timeInMillis + tempOffset
+    }
+
+    /**
+     * 根据传递过来的time，返回对应的年，月，日数组
+     */
+    fun getYearMonthDayByTime(time: Long = System.currentTimeMillis()): IntArray {
+        var result = IntArray(3)
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(time)
+        result[0] = calendar.get(Calendar.YEAR)
+        result[1] = calendar.get(Calendar.MONTH)
+        result[2] = calendar.get(Calendar.DAY_OF_MONTH)
+        return result
+    }
+
+    /**
      * 根据一个时间time，获取当前的开始和结束
      */
     fun getDayStartAndEnd(time: Long = System.currentTimeMillis()): LongArray {

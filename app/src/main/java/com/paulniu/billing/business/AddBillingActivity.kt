@@ -1,10 +1,13 @@
 package com.paulniu.billing.business
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
+import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.bill_data_lib.source.TypeSource
@@ -29,7 +32,12 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
     // 选中的账单分类
     private var mSelectedType: TypeInfo? = null
 
-    private var mCurrTime = System.currentTimeMillis()
+    private var mSelectedTime = System.currentTimeMillis()
+
+    // 当天的年月日
+    private var mYear: Int = TimeUtil.getYear()
+    private var mMonth: Int = TimeUtil.getMonth()
+    private var mDay: Int = TimeUtil.getDay()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +67,11 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
         mSelectedType = mTypeDatas[0]
         // 设置输入框初始样式
         add_bill_activity_input_view.setBillTitle(mSelectedType?.iconRes, mSelectedType?.title)
+        // 根据当前时间填充文本
+        add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(
+            System.currentTimeMillis(),
+            TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG
+        )
     }
 
     private fun initListener() {
@@ -73,7 +86,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
                 add_bill_activity_input_view.getBillMoney()!!.toFloat(),
                 mSelectedType!!.id,
                 mSelectedType,
-                mCurrTime
+                mSelectedTime
             )
             BillSource.addOrUpdate(bill)
             Toast.makeText(this, "添加成功！", Toast.LENGTH_SHORT).show()
@@ -86,6 +99,17 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
         }
         add_bill_activity_time_tv.setOnClickListener {
             // 选择时间
+            val datePickerDialog =
+                DatePickerDialog(this,R.style.AppThemeDatePicker,
+                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                        mYear = year
+                        mMonth = month
+                        mDay = dayOfMonth
+                        mSelectedTime = TimeUtil.getCurrentTimeByDay(year,month,dayOfMonth)
+                        add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(mSelectedTime,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG)
+                    }, mYear, mMonth, mDay
+                )
+            datePickerDialog.show()
         }
     }
 

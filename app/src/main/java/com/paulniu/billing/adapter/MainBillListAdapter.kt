@@ -75,7 +75,7 @@ class MainBillListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mBillList!![position].id!! <= 0) {
+        return if (mBillList!![position].id <= 0) {
             TYPE_DATE
         } else {
             TYPE_BILL

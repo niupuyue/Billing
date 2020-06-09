@@ -11,7 +11,9 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
+import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.MainBillListAdapter
@@ -136,6 +138,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     private fun initData() {
         // 从数据库中获取数据
         mBillList = BillSource.queryBillByMonth() as ArrayList<BillInfo>
+        formatBillData()
         main_activity_recyclerview.adapter = MainBillListAdapter(this, mBillList, this)
         main_activity_recyclerview.layoutManager = LinearLayoutManager(this)
     }
@@ -145,13 +148,45 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     }
 
     /**
-     * 将账单信息根据
+     * 将账单信息根据日期进行格式化
      */
     private fun formatBillData() {
         if (mBillList.isEmpty()) {
             return
         }
-
+        var insertArray = ArrayList<Int>()
+        // 主要思路：判断当前日期和下一个日期是否是同一天，如果是同一天，则不添加，否则就添加
+        var index = 0
+        insertArray.add(index)
+        while (index < mBillList.size) {
+            val xBillInfo = mBillList[index]
+            val xBillTimes = TimeUtil.getYearMonthDayByTime(xBillInfo.time)
+            var indey = index + 1
+            while (indey < mBillList.size) {
+                val yBillInfo = mBillList[indey]
+                val yBillTimes = TimeUtil.getYearMonthDayByTime(yBillInfo.time)
+                if (xBillTimes[0] != yBillTimes[0] || xBillTimes[1] != yBillTimes[1] || xBillTimes[2] != yBillTimes[2]) {
+                    insertArray.add(indey)
+                    index = indey
+                    break
+                }
+                indey++
+                if (indey == mBillList.size){
+                    index = indey
+                    break
+                }
+            }
+            if (index ==mBillList.size - 1){
+                break
+            }
+        }
+        var position = 0
+        while (position < insertArray.size){
+            mBillList.add(position+insertArray[position],
+                BillInfo(-1,TimeUtil.formatTimeToString(mBillList[position+insertArray[position]].time,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG),
+                    0f,-1,null,mBillList[position+insertArray[position]].time))
+            position++
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -161,34 +196,4 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         }
     }
 
-
-//    private val mAddBillDialog by lazy {
-//        AddBillDialog(this, this)
-//    }
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//
-//        btn_add.setOnClickListener {
-//            if (!mAddBillDialog.isShowing) {
-//                mAddBillDialog.show()
-//            }
-//        }
-//
-//        btn_query.setOnClickListener {
-//            val bills = BillSource.queryAllBill()
-//            Toast.makeText(this, bills.toString(), Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//
-//    override fun onAddBill(billBean: BillBean) {
-//        // 添加账单
-//        val count = BillSource.addOrUpdateBill(billBean)
-//        if (count > 0) {
-//            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 }
