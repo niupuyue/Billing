@@ -22,5 +22,8 @@
     <string name="app_cancel">取消</string>
     <string name="app_confirm">确定</string>
     <string name="app_delete">删除</string>
+    <string name="setting_activity_title">设置</string>
+    <string name="analysis_activity_title">报表</string>
+    <string name="person_activity_title">个人信息</string>
 
 </resources>

@@ -1,9 +1,12 @@
 package com.paulniu.billing.business
 
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.paulniu.billing.R
 import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.android.synthetic.main.view_setting_toolbar.view.*
 
 /**
  * @author:Niu Puyue
@@ -17,11 +20,22 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        initListener()
+        initView()
     }
 
-    private fun initListener() {
-        setting_activity_back_iv.setOnClickListener {
+    private fun initView() {
+        setSupportActionBar(setting_activity_toolbar)
+        // 设置toolbar的自定义样式
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.setBackgroundDrawable(null)
+        val setting_toolbar_layout = layoutInflater.inflate(R.layout.view_setting_toolbar, null)
+        val setting_toolbar_params = ActionBar.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        supportActionBar?.setCustomView(setting_toolbar_layout, setting_toolbar_params)
+        setting_toolbar_layout.setting_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
     }

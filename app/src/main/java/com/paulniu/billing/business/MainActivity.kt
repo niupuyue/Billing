@@ -123,9 +123,9 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         main_activity_drawer_layout.addDrawerListener(toggel)
         toggel.syncState()
         // 设置toolbar的自定义样式
-        supportActionBar?.setDisplayShowCustomEnabled(true);
-        supportActionBar?.setDisplayShowHomeEnabled(false);
-        supportActionBar?.setBackgroundDrawable(null);
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.setBackgroundDrawable(null)
         val main_toolbar_layout = layoutInflater.inflate(R.layout.view_main_mytoolbar, null)
         val main_toolbar_params = ActionBar.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
