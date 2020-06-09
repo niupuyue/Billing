@@ -105,6 +105,7 @@ class MainBillListAdapter(
             titleBill?.run {
                 holder.billListTitleDate.text = TimeUtil.formatTimeToMonthAndDay(time)
                 holder.billListTitleWeek.text = TimeUtil.formatTimeToWeek(time)
+                holder.billListTitleMoney.text = titleBill.money.toString()
             }
         }
     }

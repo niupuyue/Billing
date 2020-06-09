@@ -15,6 +15,7 @@ import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
+import com.paulniu.bill_data_lib.source.BillCalculateSource
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.MainBillListAdapter
 import com.paulniu.billing.database.BillSource
@@ -182,9 +183,10 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         }
         var position = 0
         while (position < insertArray.size){
+            val time = mBillList[position+insertArray[position]].time
             mBillList.add(position+insertArray[position],
-                BillInfo(-1,TimeUtil.formatTimeToString(mBillList[position+insertArray[position]].time,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG),
-                    0f,-1,null,mBillList[position+insertArray[position]].time))
+                BillInfo(-1,TimeUtil.formatTimeToString(time,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG),
+                    BillCalculateSource.sumMoneyByTimes(TimeUtil.getDayStartAndEnd(time)[0],TimeUtil.getDayStartAndEnd(time)[1]),-1,null,time))
             position++
         }
     }
