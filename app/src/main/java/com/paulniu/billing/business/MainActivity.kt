@@ -1,5 +1,6 @@
 package com.paulniu.billing.business
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,25 +8,34 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
+import com.paulniu.bill_base_lib.util.DensityUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.bill_data_lib.source.BillCalculateSource
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.MainBillListAdapter
 import com.paulniu.billing.database.BillSource
+import com.paulniu.billing.listener.IMainBillListDeleteListener
 import com.paulniu.billing.listener.IMainBillListListener
+import com.paulniu.billing.widget.MainBillListDeleteDialog
+import kotlinx.android.synthetic.main.activity_add_billing.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.main_activity_bar_main.*
+import kotlinx.android.synthetic.main.view_main_mytoolbar.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.reflect.Field
 
 class MainActivity : AppCompatActivity(), IMainBillListListener {
 
@@ -34,6 +44,13 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     private val eventBus by lazy {
         EventBus.getDefault()
     }
+
+    private var mBillListAdapter: MainBillListAdapter? = null
+
+    private var mSelectedTime = System.currentTimeMillis()
+    private var mYear = TimeUtil.getYear(mSelectedTime)
+    private var mMonth = TimeUtil.getMonth(mSelectedTime)
+    private var mDay = TimeUtil.getDay(mSelectedTime)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +96,18 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
 
     override fun onLongClick(position: Int) {
         // 长恩显示删除弹窗
+        val deleteDialog = MainBillListDeleteDialog(this, object : IMainBillListDeleteListener {
+            override fun onDelete() {
+                BillSource.deleteBillById(mBillList[position].id)
+                // 删除成功
+                Toast.makeText(this@MainActivity, "删除成功！", Toast.LENGTH_SHORT).show()
+                mBillList.removeAt(position)
+                mBillListAdapter?.notifyDataSetChanged()
+            }
+        })
+        if (!deleteDialog.isShowing) {
+            deleteDialog.show()
+        }
     }
 
     private fun initView() {
@@ -103,6 +132,29 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         supportActionBar?.setCustomView(main_toolbar_layout, main_toolbar_params)
+        main_toolbar_layout.main_activity_toolbar_date_tv.setOnClickListener {
+            // 重新选择月份
+            val datePickerDialog =
+                DatePickerDialog(
+                    this, R.style.AppThemeDatePicker,
+                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                        mYear = year
+                        mMonth = month
+                        mDay = dayOfMonth
+                        mSelectedTime = TimeUtil.getCurrentTimeByDay(year, month, dayOfMonth)
+                        // 重新加载数据
+                        initData()
+                        main_toolbar_layout.main_activity_toolbar_date_tv.text =
+                            TimeUtil.formatTimeToString(
+                                mSelectedTime,
+                                TimeConstant.TYPE_YEAR_MONTH_XIEGANG
+                            )
+                    }, mYear, mMonth, mDay
+                )
+            datePickerDialog.show()
+        }
+        main_toolbar_layout.main_activity_toolbar_date_tv.text =
+            TimeUtil.formatTimeToString(mSelectedTime, TimeConstant.TYPE_YEAR_MONTH_XIEGANG)
     }
 
     private fun initListener() {
@@ -138,14 +190,16 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
 
     private fun initData() {
         // 从数据库中获取数据
-        mBillList = BillSource.queryBillByMonth() as ArrayList<BillInfo>
+        mBillList = BillSource.queryBillByMonth(mSelectedTime) as ArrayList<BillInfo>
         formatBillData()
-        main_activity_recyclerview.adapter = MainBillListAdapter(this, mBillList, this)
+        mBillListAdapter = MainBillListAdapter(this, mBillList, this)
+        main_activity_recyclerview.adapter = mBillListAdapter
         main_activity_recyclerview.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun formatAnalysisCard() {
-        main_activity_analysis_simple_card.visibility = View.VISIBLE
+        // 计算这个月一共花了多少钱
+        main_activity_analysis_simple_card_balance_tv.text = BillCalculateSource.sumMoneyByTimes(
+            TimeUtil.getMonthStartAndEnd(mSelectedTime)[0],
+            TimeUtil.getMonthStartAndEnd(mSelectedTime)[1]
+        ).toString()
     }
 
     /**
@@ -172,21 +226,28 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
                     break
                 }
                 indey++
-                if (indey == mBillList.size){
+                if (indey == mBillList.size) {
                     index = indey
                     break
                 }
             }
-            if (index ==mBillList.size - 1){
+            if (index == mBillList.size - 1) {
                 break
             }
         }
         var position = 0
-        while (position < insertArray.size){
-            val time = mBillList[position+insertArray[position]].time
-            mBillList.add(position+insertArray[position],
-                BillInfo(-1,TimeUtil.formatTimeToString(time,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG),
-                    BillCalculateSource.sumMoneyByTimes(TimeUtil.getDayStartAndEnd(time)[0],TimeUtil.getDayStartAndEnd(time)[1]),-1,null,time))
+        while (position < insertArray.size) {
+            val time = mBillList[position + insertArray[position]].time
+            mBillList.add(
+                position + insertArray[position],
+                BillInfo(
+                    -1, TimeUtil.formatTimeToString(time, TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG),
+                    BillCalculateSource.sumMoneyByTimes(
+                        TimeUtil.getDayStartAndEnd(time)[0],
+                        TimeUtil.getDayStartAndEnd(time)[1]
+                    ), -1, null, time
+                )
+            )
             position++
         }
     }

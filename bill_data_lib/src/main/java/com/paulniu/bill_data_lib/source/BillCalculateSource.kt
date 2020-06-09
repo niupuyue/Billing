@@ -13,7 +13,7 @@ import com.paulniu.billing.database.AppDataBase
 object BillCalculateSource {
 
     /**
-     * 计算某一天的收支
+     * 计算某一段时间内的花销
      */
     @JvmStatic
     fun sumMoneyByTimes(startTime:Long,endTime:Long):Float{

@@ -22,6 +22,24 @@ object BillSource {
     }
 
     /**
+     * 删除一个账单
+     */
+    @JvmStatic
+    fun deleteBillById(id: Int) {
+        val deleteBillInfo = getBillInfoById(id)
+        if (null != deleteBillInfo)
+            AppDataBase.getInstance(App.getAppContext()).billInfoDao().delete(deleteBillInfo)
+    }
+
+    /**
+     * 根据id获取账单信息
+     */
+    @JvmStatic
+    fun getBillInfoById(id: Int): BillInfo? {
+        return AppDataBase.getInstance(App.getAppContext()).billInfoDao().getBillInfoById(id)
+    }
+
+    /**
      * 查询所有账单
      */
     @JvmStatic
@@ -40,7 +58,6 @@ object BillSource {
                 TimeUtil.getDayStartAndEnd(time)[1]
             )
     }
-
 
     /**
      * 查询当月的所有账单

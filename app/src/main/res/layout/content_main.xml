@@ -26,7 +26,7 @@
             android:id="@+id/main_activity_analysis_simple_card_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="总余额"
+            android:text="总共花了"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -54,53 +54,6 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/main_activity_analysis_simple_card_money_tips_tv"
             app:layout_constraintLeft_toRightOf="@id/main_activity_analysis_simple_card_money_tips_tv" />
-
-        <TextView
-            android:id="@+id/main_activity_analysis_simple_card_income_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="月收入"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_activity_analysis_simple_card_money_tips_tv" />
-
-        <TextView
-            android:id="@+id/main_activity_analysis_simple_card_income_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="200.0"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_activity_analysis_simple_card_income_title_tv" />
-
-        <TextView
-            android:id="@+id/main_activity_analysis_simple_card_outcome_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="40dp"
-            android:text="月支出"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/main_activity_analysis_simple_card_income_title_tv"
-            app:layout_constraintLeft_toRightOf="@id/main_activity_analysis_simple_card_income_title_tv" />
-
-        <TextView
-            android:id="@+id/main_activity_analysis_simple_card_outcome_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="100.0"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@id/main_activity_analysis_simple_card_outcome_title_tv"
-            app:layout_constraintTop_toBottomOf="@id/main_activity_analysis_simple_card_outcome_title_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

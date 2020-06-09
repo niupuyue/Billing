@@ -1,9 +1,6 @@
 package com.paulniu.bill_data_lib.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.paulniu.bill_data_lib.bean.BillInfo
 
 /**
@@ -20,6 +17,9 @@ abstract class BillInfoDao {
 
     @Insert
     abstract fun insert(billInfo: BillInfo)
+
+    @Delete
+    abstract fun delete(billInfo: BillInfo)
 
     /**
      * 添加或更新bill

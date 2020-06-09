@@ -16,4 +16,6 @@ object TimeConstant {
 
     const val TYPE_YEAR_MONTH_DAY_XIEGANG = "yyyy/MM/dd"
 
+    const val TYPE_YEAR_MONTH_XIEGANG = "yyyy/MM"
+
 }
