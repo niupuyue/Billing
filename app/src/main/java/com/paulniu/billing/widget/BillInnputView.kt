@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -55,9 +56,20 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
         // 输入框获取焦点
         bill_input_view_input_et.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                bill_input_view_input_et.setSelection(bill_input_view_input_et.text.length)
+                bill_input_view_input_et.setSelection(bill_input_view_input_et.text.toString().length)
             }
         }
+
+        bill_input_view_container_rl.setOnTouchListener(object : OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                // 当总布局获取到触摸事件时，输入框获取焦点
+                if (event?.action == MotionEvent.ACTION_UP) {
+                    bill_input_view_input_et.requestFocus()
+                    bill_input_view_input_et.setSelection(bill_input_view_input_et.text.toString().length)
+                }
+                return true
+            }
+        })
     }
 
     /**
