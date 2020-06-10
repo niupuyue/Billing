@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.paulniu.bill_base_lib.util.SPUtil
+import com.paulniu.billing.Constant
 import com.paulniu.billing.R
 import kotlinx.android.synthetic.main.activity_person.*
 import kotlinx.android.synthetic.main.view_analysis_toolbar.view.*
@@ -25,6 +27,10 @@ class PersonActivity : AppCompatActivity() {
         setContentView(R.layout.activity_person)
 
         initView()
+
+        initData()
+
+        initListener()
     }
 
     private fun initView() {
@@ -43,6 +49,36 @@ class PersonActivity : AppCompatActivity() {
             onBackPressed()
         }
         title_name = person_toolbar_layout.person_toolbar_title_tv
+
+
+    }
+
+    private fun initData() {
+        // 从SP中获取用户信息
+        val oldName = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_BASE_NAME, "牛爱英")
+        // 设置当前用户的name
+        title_name.text = oldName
+
+        person_activity_username_tv.text = oldName
+
+        person_activity_motto_tv.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_MOTTO, "好懒啊，什么也没有留下~")
+
+    }
+
+    private fun initListener() {
+        person_activity_motto_tv.setOnClickListener {
+            // 点击编辑签名
+        }
+
+        person_activity_username_tv.setOnClickListener {
+            // 点击编辑昵称
+        }
+
+        title_name.setOnClickListener {
+            // 编辑昵称
+        }
     }
 
 }

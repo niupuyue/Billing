@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -17,25 +14,26 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
-import com.paulniu.bill_base_lib.util.DensityUtil
+import com.paulniu.bill_base_lib.event.ChangeUserNameEvent
+import com.paulniu.bill_base_lib.util.SPUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.bill_data_lib.source.BillCalculateSource
+import com.paulniu.billing.Constant
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.MainBillListAdapter
 import com.paulniu.billing.database.BillSource
 import com.paulniu.billing.listener.IMainBillListDeleteListener
 import com.paulniu.billing.listener.IMainBillListListener
 import com.paulniu.billing.widget.MainBillListDeleteDialog
-import kotlinx.android.synthetic.main.activity_add_billing.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.main_activity_bar_main.*
 import kotlinx.android.synthetic.main.view_main_mytoolbar.view.*
+import kotlinx.android.synthetic.main.view_main_nav_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.reflect.Field
 
 class MainActivity : AppCompatActivity(), IMainBillListListener {
 
@@ -254,9 +252,14 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun addBillSuccess(event: AddBillSuccessEvent) {
-        if (null != event) {
-            initData()
-        }
+        initData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    fun changeUserName(event: ChangeUserNameEvent){
+        // TODO 这种方式不行
+        main_activity_nav_header_name_tv.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)?.getString(Constant.SP_KEY_USER_BASE_NAME,"牛爱英")
+        main_activity_nav_header_motto_tv.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)?.getString(Constant.SP_KEY_USER_MOTTO,"好懒啊，什么都没有写~")
     }
 
 }

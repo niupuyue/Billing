@@ -135,26 +135,26 @@ object TimeUtil {
         val calendar = Calendar.getInstance()
         val date = Date(time)
         calendar.time = date
-        return when (calendar.firstDayOfWeek) {
-            0 -> {
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> {
                 "周日"
             }
-            1 -> {
+            Calendar.MONDAY -> {
                 "周一"
             }
-            2 -> {
+            Calendar.TUESDAY -> {
                 "周二"
             }
-            3 -> {
+            Calendar.WEDNESDAY -> {
                 "周三"
             }
-            4 -> {
+            Calendar.THURSDAY -> {
                 "周四"
             }
-            5 -> {
+            Calendar.FRIDAY -> {
                 "周五"
             }
-            6 -> {
+            Calendar.SATURDAY -> {
                 "周六"
             }
             else -> {

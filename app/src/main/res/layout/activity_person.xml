@@ -20,4 +20,55 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/shape_main_activity_analysis_simple_card_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.paulniu.bill_base_lib.widget.CircleImage
+                android:id="@+id/person_activity_avator_iv"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/person_activity_username_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@mipmap/app_icon_edit"
+            android:drawablePadding="8dp"
+            android:text=""
+            android:textColor="@color/color_212121"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/person_activity_motto_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@mipmap/app_icon_edit"
+            android:drawablePadding="8dp"
+            android:textColor="@color/color_212121"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
