@@ -24,6 +24,19 @@
     <string name="app_delete">删除</string>
     <string name="setting_activity_title">设置</string>
     <string name="analysis_activity_title">报表</string>
+
+    <!-- 个人信息编辑页面 -->
     <string name="person_activity_title">个人信息</string>
+    <string name="person_activity_set_motto_success">座右铭编辑完成！</string>
+    <string name="person_activity_set_nickname_success">昵称编辑完成！</string>
+
+    <!-- 修改用户昵称和座右铭弹窗 EditNickNameAndMottoDialog -->
+    <string name="edit_nickname_motto_dialog_title">修改%s</string>
+    <string name="edit_nickname_motto_dialog_nickname">昵称</string>
+    <string name="edit_nickname_motto_dialog_motto">座右铭</string>
+    <string name="edit_nickname_motto_dialog_nickname_hint">请输入你的昵称</string>
+    <string name="edit_nickname_motto_dialog_motto_hint">写点自己想说的话吧~</string>
+    <string name="edit_nickname_motto_dialog_confirm">确定</string>
+    <string name="edit_nickname_motto_dialog_cancel">取消</string>
 
 </resources>

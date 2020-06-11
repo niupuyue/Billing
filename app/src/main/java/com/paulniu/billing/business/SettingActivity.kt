@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.paulniu.billing.BuildConfig
 import com.paulniu.billing.R
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.view_setting_toolbar.view.*
@@ -21,6 +22,8 @@ class SettingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setting)
 
         initView()
+
+        initData()
     }
 
     private fun initView() {
@@ -38,6 +41,10 @@ class SettingActivity : AppCompatActivity() {
         setting_toolbar_layout.setting_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun initData() {
+        setting_activity_app_version_tv.text = BuildConfig.VERSION_NAME
     }
 
 }

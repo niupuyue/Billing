@@ -4,13 +4,12 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.paulniu.bill_base_lib.util.SPUtil
 import com.paulniu.billing.Constant
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IPrivacyDialogListener
-import com.paulniu.billing.widget.PrivacyDialog
+import com.paulniu.billing.widget.dialog.PrivacyDialog
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 /**
@@ -75,7 +74,8 @@ class WelcomeActivity : AppCompatActivity() {
         if (!SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
                 ?.getBoolean(Constant.SP_KEY_SHOW_PRIVACY_DIALOG, false)!!
         ) {
-            val privacyDialog = PrivacyDialog(this)
+            val privacyDialog =
+                PrivacyDialog(this)
             privacyDialog.setPrivacyDialogListener(object : IPrivacyDialogListener {
                 override fun onAgree() {
                     textAnimator.start()

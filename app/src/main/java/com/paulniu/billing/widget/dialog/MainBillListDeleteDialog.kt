@@ -1,4 +1,4 @@
-package com.paulniu.billing.widget
+package com.paulniu.billing.widget.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -30,11 +30,6 @@ class MainBillListDeleteDialog(context: Context, listener: IMainBillListDeleteLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_dialog_delete_bill)
-
-//        val params = window?.attributes
-//        params?.width = DensityUtil.getScreenWidth(context) * 0.8.toInt()
-//        params?.height = WindowManager.LayoutParams.WRAP_CONTENT
-//        window?.attributes = params
 
         // 设置弹窗样式
         window?.setGravity(Gravity.CENTER)

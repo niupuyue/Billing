@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -25,12 +28,11 @@ import com.paulniu.billing.adapter.MainBillListAdapter
 import com.paulniu.billing.database.BillSource
 import com.paulniu.billing.listener.IMainBillListDeleteListener
 import com.paulniu.billing.listener.IMainBillListListener
-import com.paulniu.billing.widget.MainBillListDeleteDialog
+import com.paulniu.billing.widget.dialog.MainBillListDeleteDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.main_activity_bar_main.*
 import kotlinx.android.synthetic.main.view_main_mytoolbar.view.*
-import kotlinx.android.synthetic.main.view_main_nav_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,6 +51,11 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     private var mYear = TimeUtil.getYear(mSelectedTime)
     private var mMonth = TimeUtil.getMonth(mSelectedTime)
     private var mDay = TimeUtil.getDay(mSelectedTime)
+
+    private var mNavHeaderContainer: LinearLayout? = null
+    private var mNavHeaderAvator: ImageView? = null
+    private var mNavHeaderName: TextView? = null
+    private var mNavHeaderMotto: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,15 +101,18 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
 
     override fun onLongClick(position: Int) {
         // 长恩显示删除弹窗
-        val deleteDialog = MainBillListDeleteDialog(this, object : IMainBillListDeleteListener {
-            override fun onDelete() {
-                BillSource.deleteBillById(mBillList[position].id)
-                // 删除成功
-                Toast.makeText(this@MainActivity, "删除成功！", Toast.LENGTH_SHORT).show()
-                mBillList.removeAt(position)
-                mBillListAdapter?.notifyDataSetChanged()
-            }
-        })
+        val deleteDialog =
+            MainBillListDeleteDialog(
+                this,
+                object : IMainBillListDeleteListener {
+                    override fun onDelete() {
+                        BillSource.deleteBillById(mBillList[position].id)
+                        // 删除成功
+                        Toast.makeText(this@MainActivity, "删除成功！", Toast.LENGTH_SHORT).show()
+                        mBillList.removeAt(position)
+                        mBillListAdapter?.notifyDataSetChanged()
+                    }
+                })
         if (!deleteDialog.isShowing) {
             deleteDialog.show()
         }
@@ -153,6 +163,12 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         }
         main_toolbar_layout.main_activity_toolbar_date_tv.text =
             TimeUtil.formatTimeToString(mSelectedTime, TimeConstant.TYPE_YEAR_MONTH_XIEGANG)
+
+        val mNavHeader = main_activity_nav_view.getHeaderView(0)
+        mNavHeaderContainer = mNavHeader.findViewById(R.id.main_activity_nav_header_container_ll)
+        mNavHeaderAvator = mNavHeader.findViewById(R.id.main_activity_nav_header_avator_iv)
+        mNavHeaderName = mNavHeader.findViewById(R.id.main_activity_nav_header_name_tv)
+        mNavHeaderMotto = mNavHeader.findViewById(R.id.main_activity_nav_header_motto_tv)
     }
 
     private fun initListener() {
@@ -184,6 +200,11 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
             main_activity_drawer_layout.closeDrawer(GravityCompat.START)
             true
         }
+
+        mNavHeaderContainer?.setOnClickListener {
+            // 跳转到个人页面
+            startActivity(Intent(this@MainActivity, PersonActivity::class.java))
+        }
     }
 
     private fun initData() {
@@ -198,6 +219,13 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
             TimeUtil.getMonthStartAndEnd(mSelectedTime)[0],
             TimeUtil.getMonthStartAndEnd(mSelectedTime)[1]
         ).toString()
+        // 设置用户昵称和座右铭
+        mNavHeaderName?.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_BASE_NAME, "牛爱英")
+        mNavHeaderMotto?.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_MOTTO, "好懒啊，什么都没有写~")
+        // 设置用户的头像
+
     }
 
     /**
@@ -255,11 +283,13 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         initData()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    fun changeUserName(event: ChangeUserNameEvent){
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun changeUserName(event: ChangeUserNameEvent) {
         // TODO 这种方式不行
-        main_activity_nav_header_name_tv.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)?.getString(Constant.SP_KEY_USER_BASE_NAME,"牛爱英")
-        main_activity_nav_header_motto_tv.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)?.getString(Constant.SP_KEY_USER_MOTTO,"好懒啊，什么都没有写~")
+        mNavHeaderName?.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_BASE_NAME, "牛爱英")
+        mNavHeaderMotto?.text = SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
+            ?.getString(Constant.SP_KEY_USER_MOTTO, "好懒啊，什么都没有写~")
     }
 
 }

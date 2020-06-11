@@ -1,4 +1,4 @@
-package com.paulniu.billing.widget
+package com.paulniu.billing.widget.dialog
 
 import android.app.Dialog
 import android.content.Context

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_activity_nav_header_container_ll"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="200dp"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -23,6 +24,7 @@
         android:id="@+id/main_activity_nav_header_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:paddingTop="8dp"
         android:text="@string/maint_activity_nav_header_name_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -30,6 +32,7 @@
     <TextView
         android:id="@+id/main_activity_nav_header_motto_tv"
         android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:text="@string/main_activity_nav_header_motto" />
 
