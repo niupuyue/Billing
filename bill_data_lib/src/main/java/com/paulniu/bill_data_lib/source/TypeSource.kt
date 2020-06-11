@@ -15,11 +15,24 @@ import com.paulniu.billing.database.AppDataBase
 object TypeSource {
 
     /**
+     * 清除类型数据
+     */
+    @JvmStatic
+    fun clearTypes() {
+        val types = queryTypes()
+        if (null != types && types.isNotEmpty()) {
+            types.forEach { value ->
+                AppDataBase.getInstance(App.getAppContext()).typeInfoDao().delete(value)
+            }
+        }
+    }
+
+    /**
      * 插入或者更新类型
      */
     @JvmStatic
     fun addOrUpdate(typeInfo: TypeInfo) {
-        if (typeInfo.id!! < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
             return
         }
         AppDataBase.getInstance(App.getAppContext()).typeInfoDao().addOrUpdate(typeInfo)
@@ -29,11 +42,19 @@ object TypeSource {
      * 执行插入操作
      */
     @JvmStatic
-    fun addTypeInfo(typeInfo: TypeInfo){
-        if (typeInfo.id!! < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+    fun addTypeInfo(typeInfo: TypeInfo) {
+        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
             return
         }
         AppDataBase.getInstance(App.getAppContext()).typeInfoDao().insert(typeInfo)
+    }
+
+    /**
+     * 获取所有的类型
+     */
+    @JvmStatic
+    fun queryTypes(): List<TypeInfo>? {
+        return AppDataBase.getInstance(App.getAppContext()).typeInfoDao().queryTypeInfos()
     }
 
     /**

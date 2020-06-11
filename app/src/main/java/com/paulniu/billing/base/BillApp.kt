@@ -5,7 +5,9 @@ import com.paulniu.bill_data_lib.bean.BaseType
 import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.bill_data_lib.source.BaseTypeSource
 import com.paulniu.bill_data_lib.source.TypeSource
+import com.paulniu.billing.BuildConfig
 import com.paulniu.billing.R
+import com.paulniu.billing.util.MetaDataUtil
 
 /**
  * @author:Niu Puyue
@@ -31,7 +33,8 @@ class BillApp : App() {
             BaseTypeSource.addOrUpdate(BaseType(1,"支出"))
         }
 
-        if(null == TypeSource.queryTypeInfosByBaseType(1) || TypeSource.queryTypeInfosByBaseType(1)!!.isEmpty()){
+        if(null == TypeSource.queryTypeInfosByBaseType(1) || TypeSource.queryTypeInfosByBaseType(1)!!.isEmpty() || MetaDataUtil.shouldUpdateTypes){
+            TypeSource.clearTypes()
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_food, "餐饮", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_book, "书籍", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_edition, "教育", 1,BaseType(1,"支出")))

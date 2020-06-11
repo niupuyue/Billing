@@ -32,6 +32,12 @@ abstract class TypeInfoDao {
     }
 
     /**
+     * 查询所有的types
+     */
+    @Query("select * from typeinfo")
+    abstract fun queryTypeInfos():List<TypeInfo>?
+
+    /**
      * 根据id获取type对象
      */
     @Query("select * from typeinfo where id = :typeId")
