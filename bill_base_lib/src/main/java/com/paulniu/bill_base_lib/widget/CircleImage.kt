@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 
 /**
@@ -42,6 +43,9 @@ class CircleImage constructor(context: Context, attr: AttributeSet) :
         val matrix = Matrix()
         matrix.setScale(mScale!!, mScale!!)
         bitmapShader.setLocalMatrix(matrix)
+
+        mPaint?.shader = bitmapShader
+        canvas?.drawCircle(mRadius!!.toFloat(), mRadius!!.toFloat(), mRadius!!.toFloat(), mPaint!!)
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
