@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/analysis_item_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/shape_analysis_item_view_bg"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/analysis_item_view_icon_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@mipmap/app_icon_food"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/analysis_item_view_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text=""
+        android:textColor="@color/color_212121"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/analysis_item_view_icon_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="餐饮" />
+
+    <TextView
+        android:id="@+id/analysis_item_view_precent_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text=""
+        android:textColor="@color/color_515559"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/analysis_item_view_title_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="50%" />
+
+    <TextView
+        android:id="@+id/analysis_item_view_money_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/color_212121"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="￥ 500.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
