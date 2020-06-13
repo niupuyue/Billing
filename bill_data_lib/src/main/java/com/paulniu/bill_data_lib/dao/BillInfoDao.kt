@@ -58,4 +58,10 @@ abstract class BillInfoDao {
     @Query("select sum(money) from BillInfo where time between :startTime and :endTime")
     abstract fun getMoneyByTimes(startTime: Long, endTime: Long): Float
 
+    /**
+     * 计算某段时间内某一个类型的金额
+     */
+    @Query("select sum(money) from billinfo where typeId == :type and time between :startTime and :endTime")
+    abstract fun getMoneyByTimesType(startTime: Long, endTime: Long, type: Int):Float?
+
 }

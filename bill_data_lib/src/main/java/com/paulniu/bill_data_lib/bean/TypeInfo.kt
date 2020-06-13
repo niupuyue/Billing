@@ -27,5 +27,11 @@ data class TypeInfo(
     var baseType: BaseType? = null,
 
     @Ignore
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+
+    @Ignore
+    var totalMoney: Float? = null,
+
+    @Ignore
+    var precent: Float? = null
 )

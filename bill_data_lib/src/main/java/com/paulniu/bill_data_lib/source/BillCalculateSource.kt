@@ -20,4 +20,12 @@ object BillCalculateSource {
         return AppDataBase.getInstance(App.getAppContext()).billInfoDao().getMoneyByTimes(startTime,endTime)
     }
 
+    /**
+     * 计算某段时间内某一个类型的花销
+     */
+    @JvmStatic
+    fun sumMoneyByTimesType(startTime: Long,endTime: Long,type:Int):Float?{
+        return AppDataBase.getInstance(App.getAppContext()).billInfoDao().getMoneyByTimesType(startTime,endTime,type)
+    }
+
 }
