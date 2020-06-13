@@ -68,7 +68,7 @@ object TimeUtil {
     }
 
     /**
-     * 根据一个时间time，获取当前的开始和结束
+     * 根据一个时间time，获取当天的开始和结束
      */
     fun getDayStartAndEnd(time: Long = System.currentTimeMillis()): LongArray {
         val resultArray = LongArray(2)
@@ -103,6 +103,31 @@ object TimeUtil {
         resultArray[0] = calendarStart.timeInMillis
         val calendarEnd = Calendar.getInstance()
         calendarEnd.time = date
+        calendarEnd.set(Calendar.DAY_OF_MONTH, calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH))
+        calendarEnd.set(Calendar.HOUR_OF_DAY, 23)
+        calendarEnd.set(Calendar.MINUTE, 59)
+        calendarEnd.set(Calendar.SECOND, 59)
+        resultArray[1] = calendarEnd.timeInMillis
+        return resultArray
+    }
+
+    /**
+     * 根据一个时间time，获取当年的开始和结束
+     */
+    fun getYearStartAndEnd(time: Long = System.currentTimeMillis()): LongArray {
+        val resultArray = LongArray(2)
+        val date = Date(time)
+        val calendarStart = Calendar.getInstance()
+        calendarStart.time = date
+        calendarStart.set(Calendar.MONTH, 0)
+        calendarStart.set(Calendar.DAY_OF_MONTH, 1)
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0)
+        calendarStart.set(Calendar.MINUTE, 0)
+        calendarStart.set(Calendar.SECOND, 0)
+        resultArray[0] = calendarStart.timeInMillis
+        val calendarEnd = Calendar.getInstance()
+        calendarEnd.time = date
+        calendarEnd.set(Calendar.MONTH, 11)
         calendarEnd.set(Calendar.DAY_OF_MONTH, calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH))
         calendarEnd.set(Calendar.HOUR_OF_DAY, 23)
         calendarEnd.set(Calendar.MINUTE, 59)
