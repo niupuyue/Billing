@@ -51,8 +51,8 @@
                 android:textColor="@color/color_212121"
                 android:textSize="19sp" />
 
-            <EditText
-                android:id="@+id/bill_input_view_input_et"
+            <TextView
+                android:id="@+id/bill_input_view_input_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

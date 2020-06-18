@@ -28,66 +28,35 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
         // 引入布局
         LayoutInflater.from(context).inflate(R.layout.view_bill_input, this, true)
 
-        focuseHideSoftKeyboard()
+    }
 
-        // 设置输入框监听事件
-        bill_input_view_input_et.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+    /**
+     * 添加文本内容，此处只能是自定义软键盘输入的内容
+     */
+    fun changeMoney(money: String) {
+        if (TextUtils.equals(money, "删除")) {
+            // 删除一个字符
+            if (bill_input_view_input_tv.text.length > 1) {
+                val len = bill_input_view_input_tv.text.length
+                // 删除最后一个字符
+                bill_input_view_input_tv.text =
+                    bill_input_view_input_tv.text.removeRange(len - 2, len - 1)
+            } else {
+                bill_input_view_input_tv.text = "0"
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(char: CharSequence?, start: Int, before: Int, count: Int) {
-                // 输入框内容改变
-                if (TextUtils.isEmpty(char)) {
-                    bill_input_view_input_et.setText("0")
-                } else if (TextUtils.equals(char?.first().toString(), "0") &&
-                    !char?.contains(".")!! && char.length != 1
-                ) {
-                    // 如果内容以0开始并且没有小数点，则输入无效
-                    bill_input_view_input_et.setText(char.removeRange(0, 1))
-                }
-                // 将光标移到末尾
-                bill_input_view_input_et.setSelection(bill_input_view_input_et.text.length)
-            }
-        })
-
-        // 输入框获取焦点
-        bill_input_view_input_et.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bill_input_view_input_et.setSelection(bill_input_view_input_et.text.toString().length)
-            }
+        } else if (bill_input_view_input_tv.text.length == 1 && TextUtils.equals(bill_input_view_input_tv.text,"0") && !TextUtils.equals(bill_input_view_input_tv.text,".")) {
+            bill_input_view_input_tv.text = money
+        } else if (bill_input_view_input_tv.text.contains(".") && TextUtils.equals(money,".")){
+            // 不用执行任何操作
+        }else {
+            val curValue = bill_input_view_input_tv.text.toString()
+            bill_input_view_input_tv.text = curValue + money
         }
-
-        bill_input_view_container_rl.setOnTouchListener(object : OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                // 当总布局获取到触摸事件时，输入框获取焦点
-                if (event?.action == MotionEvent.ACTION_UP) {
-                    bill_input_view_input_et.requestFocus()
-                    bill_input_view_input_et.setSelection(bill_input_view_input_et.text.toString().length)
-                }
-                return true
-            }
-        })
     }
 
     /**
-     * 强制隐藏输入框的软键盘
+     * 通过方法重新设置文本内容
      */
-    private fun focuseHideSoftKeyboard() {
-        val imm: InputMethodManager? = getSystemService(context, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(bill_input_view_input_et.windowToken, 0)
-    }
-
-    /**
-     * 强制将输入框的光标移到行末
-     */
-    private fun foucseEndFouse() {
-
-    }
-
-    // 通过方法重新设置文本内容
     fun setBillTitle(iconRes: Int?, title: String?) {
         if (!TextUtils.isEmpty(title)) {
             bill_input_view_title_tv.text = title
@@ -102,7 +71,7 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
      * 输入框的内容是0，则返回null
      */
     fun getBillMoney(): String? {
-        return bill_input_view_input_et.text.trim().toString()
+        return bill_input_view_input_tv.text.trim().toString()
     }
 
 }

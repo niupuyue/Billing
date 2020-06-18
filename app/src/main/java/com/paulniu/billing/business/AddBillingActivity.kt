@@ -2,6 +2,8 @@ package com.paulniu.billing.business
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.TextClock
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,8 +15,10 @@ import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.bill_data_lib.source.TypeSource
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.AddBillAdapter
+import com.paulniu.billing.adapter.SoftKeyboardAdapter
 import com.paulniu.billing.database.BillSource
 import com.paulniu.billing.listener.IAddBillSelectListener
+import com.paulniu.billing.listener.ISoftKeyboardListener
 import kotlinx.android.synthetic.main.activity_add_billing.*
 import org.greenrobot.eventbus.EventBus
 
@@ -24,7 +28,7 @@ import org.greenrobot.eventbus.EventBus
  * time:2020/6/7 6:06 PM
  * desc: 添加账单页面
  */
-class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
+class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKeyboardListener {
 
     private var mAdapter: AddBillAdapter? = null
     private var mTypeDatas = ArrayList<TypeInfo>()
@@ -59,6 +63,15 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
         add_bill_activity_input_view.setBillTitle(mSelectedType?.iconRes, mSelectedType?.title)
     }
 
+    override fun onSelect(value: SoftKeyboardAdapter.KeyboardData) {
+        // 点击软键盘按钮
+        if (value.id == 15 && TextUtils.equals(value.value, "完成")) {
+            addBill()
+        } else {
+            add_bill_activity_input_view.changeMoney(value.value)
+        }
+    }
+
     private fun initData() {
         // 从数据库中获取数据
         mTypeDatas = TypeSource.queryTypeInfosByBaseType(1) as ArrayList<TypeInfo>
@@ -79,34 +92,22 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
             onBackPressed()
         }
         add_bill_activity_submit_tv.setOnClickListener {
-            // 添加记账数据
-            val bill = BillInfo(
-                0,
-                "标题",
-                add_bill_activity_input_view.getBillMoney()!!.toFloat(),
-                mSelectedType!!.id,
-                mSelectedType,
-                mSelectedTime
-            )
-            BillSource.addOrUpdate(bill)
-            Toast.makeText(this, "添加成功！", Toast.LENGTH_SHORT).show()
-            // 通过EventBus通知账单页面刷新
-            EventBus.getDefault().post(AddBillSuccessEvent())
-            // 关闭软键盘
-
-            // 退出当前页面
-            finish()
+            addBill()
         }
         add_bill_activity_time_tv.setOnClickListener {
             // 选择时间
             val datePickerDialog =
-                DatePickerDialog(this,R.style.AppThemeDatePicker,
+                DatePickerDialog(
+                    this, R.style.AppThemeDatePicker,
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                         mYear = year
                         mMonth = month
                         mDay = dayOfMonth
-                        mSelectedTime = TimeUtil.getCurrentTimeByDay(year,month,dayOfMonth)
-                        add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(mSelectedTime,TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG)
+                        mSelectedTime = TimeUtil.getCurrentTimeByDay(year, month, dayOfMonth)
+                        add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(
+                            mSelectedTime,
+                            TimeConstant.TYPE_YEAR_MONTH_DAY_XIEGANG
+                        )
                     }, mYear, mMonth, mDay
                 )
             datePickerDialog.show()
@@ -117,6 +118,26 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener {
         mAdapter = AddBillAdapter(this, mTypeDatas, this)
         add_bill_activity_items_recyclerview.adapter = mAdapter
         add_bill_activity_items_recyclerview.layoutManager = GridLayoutManager(this, 5)
+
+        add_bill_activity_soft_keyboard_view.setSelectKeyboardListener(this)
+    }
+
+    private fun addBill() {
+        // 添加记账数据
+        val bill = BillInfo(
+            0,
+            add_bill_activity_note_et.text.trim().toString(),
+            add_bill_activity_input_view.getBillMoney()!!.toFloat(),
+            mSelectedType!!.id,
+            mSelectedType,
+            mSelectedTime
+        )
+        BillSource.addOrUpdate(bill)
+        Toast.makeText(this, "添加成功！", Toast.LENGTH_SHORT).show()
+        // 通过EventBus通知账单页面刷新
+        EventBus.getDefault().post(AddBillSuccessEvent())
+        // 退出当前页面
+        finish()
     }
 
 }

@@ -92,6 +92,7 @@ class MainBillListAdapter(
                     holder.billListItemTitle.text = typeInfo!!.title
                 }
                 holder.billListItemMoney.text = money.toString()
+                holder.billListItemNote.text = title
             }
             holder.billListItemContainer.setOnClickListener {
                 mListener?.onClick(position)
@@ -115,6 +116,7 @@ class MainBillListAdapter(
         var billListItemIcon: ImageView = view.bill_list_item_icon_iv
         var billListItemTitle: TextView = view.bill_list_item_title_tv
         var billListItemMoney: TextView = view.bill_list_item_money_tv
+        var billListItemNote: TextView = view.bill_list_item_title_note_tv
     }
 
     class TitleBillListViewHolder(view: View) : BillListViewHolder(view) {

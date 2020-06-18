@@ -16,7 +16,6 @@
     <string name="main_activity_nav_drawer_night">夜间</string>
     <string name="main_activity_nav_open">打开</string>
     <string name="main_activity_nav_close">关闭</string>
-    <string name="add_bill_activity_submit">确定</string>
     <string name="delete_bill_dialog_title">提示</string>
     <string name="delete_bill_dialog_content">确认删除该记录？</string>
     <string name="app_cancel">取消</string>
@@ -24,6 +23,11 @@
     <string name="app_delete">删除</string>
     <string name="setting_activity_title">设置</string>
     <string name="analysis_activity_title">报表</string>
+
+    <!-- 添加账单页面 -->
+    <string name="add_bill_activity_submit">确定</string>
+    <string name="add_bill_activity_note">备注:</string>
+    <string name="add_bill_activity_note_hint">点击写备注...</string>
 
     <!-- 个人信息编辑页面 -->
     <string name="person_activity_title">个人信息</string>

@@ -35,6 +35,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/bill_list_item_title_note_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/color_515559"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/bill_list_item_title_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="备注" />
+
+    <TextView
         android:id="@+id/bill_list_item_money_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
