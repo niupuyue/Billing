@@ -1,0 +1,225 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "aad2ccdd7873544c9244ff367e36a03e",
+    "entities": [
+      {
+        "tableName": "BaseType",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_BaseType_id_title",
+            "unique": false,
+            "columnNames": [
+              "id",
+              "title"
+            ],
+            "createSql": "CREATE  INDEX `index_BaseType_id_title` ON `${TABLE_NAME}` (`id`, `title`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TypeInfo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `iconRes` INTEGER, `title` TEXT, `baseTypeId` INTEGER, `baseType` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "iconRes",
+            "columnName": "iconRes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "baseTypeId",
+            "columnName": "baseTypeId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "baseType",
+            "columnName": "baseType",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TypeInfo_id_title",
+            "unique": false,
+            "columnNames": [
+              "id",
+              "title"
+            ],
+            "createSql": "CREATE  INDEX `index_TypeInfo_id_title` ON `${TABLE_NAME}` (`id`, `title`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BillInfo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `money` REAL NOT NULL, `typeId` INTEGER, `type` TEXT, `time` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "money",
+            "columnName": "money",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeId",
+            "columnName": "typeId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "typeInfo",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_BillInfo_id_title_typeId",
+            "unique": false,
+            "columnNames": [
+              "id",
+              "title",
+              "typeId"
+            ],
+            "createSql": "CREATE  INDEX `index_BillInfo_id_title_typeId` ON `${TABLE_NAME}` (`id`, `title`, `typeId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BillNoteBean",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `typeId` INTEGER, `type` TEXT, `time` INTEGER, `count` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "typeId",
+            "columnName": "typeId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "count",
+            "columnName": "count",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_BillNoteBean_id_title_typeId",
+            "unique": false,
+            "columnNames": [
+              "id",
+              "title",
+              "typeId"
+            ],
+            "createSql": "CREATE  INDEX `index_BillNoteBean_id_title_typeId` ON `${TABLE_NAME}` (`id`, `title`, `typeId`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"aad2ccdd7873544c9244ff367e36a03e\")"
+    ]
+  }
+}
