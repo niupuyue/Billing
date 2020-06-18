@@ -46,8 +46,18 @@ class BillApp : App() {
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_social, "社交", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_pet, "宠物", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_express, "快递", 1,BaseType(1,"支出")))
-            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_cion_sport, "运动", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_sport, "运动", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_vegetable, "蔬菜", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_oil, "加油", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_amount, "礼金", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_clothes, "衣服", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_entertainment, "娱乐", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_firend, "亲友", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_house, "房子", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_household, "家居", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_kid, "孩子", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_travel, "旅行", 1,BaseType(1,"支出")))
+            TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_work, "办公", 1,BaseType(1,"支出")))
         }
 
         if (null == TypeSource.queryTypeInfosByBaseType(0) || TypeSource.queryTypeInfosByBaseType(0)!!.isEmpty()){

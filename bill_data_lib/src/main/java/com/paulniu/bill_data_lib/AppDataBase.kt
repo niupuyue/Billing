@@ -35,6 +35,13 @@ abstract class AppDataBase : RoomDatabase() {
         // 数据库升级
         val mirgration_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
+                // 每次更新将类型表删除，重新设置
+                database.execSQL("DROP TABLE IF EXISTS `TypeInfo`")
+                // 重新创建类型表
+                database.execSQL("CREATE TABLE IF NOT EXISTS `TypeInfo` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `iconRes` INTEGER, `title` TEXT, `baseTypeId` INTEGER, `baseType` TEXT)")
+                // 添加类型表索引
+                database.execSQL("CREATE  INDEX `index_TypeInfo_id_title` ON `TypeInfo` (`id`, `title`)")
+
                 // 新增记账备注表
                 database.execSQL("CREATE TABLE IF NOT EXISTS `BillNoteBean` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `typeId` INTEGER, `type` TEXT, `time` INTEGER, `count` INTEGER NOT NULL)")
                 // 新增记账备注表的索引
