@@ -28,6 +28,7 @@
     <string name="add_bill_activity_submit">确定</string>
     <string name="add_bill_activity_note">备注:</string>
     <string name="add_bill_activity_note_hint">点击写备注...</string>
+    <string name="add_bill_dialog_add_bill_note_hint">请填写备注</string>
 
     <!-- 个人信息编辑页面 -->
     <string name="person_activity_title">个人信息</string>

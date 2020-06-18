@@ -11,14 +11,17 @@ import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
+import com.paulniu.bill_data_lib.bean.BillNoteBean
 import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.bill_data_lib.source.TypeSource
 import com.paulniu.billing.R
 import com.paulniu.billing.adapter.AddBillAdapter
 import com.paulniu.billing.adapter.SoftKeyboardAdapter
 import com.paulniu.billing.database.BillSource
+import com.paulniu.billing.listener.IAddBillNoteListener
 import com.paulniu.billing.listener.IAddBillSelectListener
 import com.paulniu.billing.listener.ISoftKeyboardListener
+import com.paulniu.billing.widget.dialog.AddBillNoteDialog
 import kotlinx.android.synthetic.main.activity_add_billing.*
 import org.greenrobot.eventbus.EventBus
 
@@ -42,6 +45,9 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
     private var mYear: Int = TimeUtil.getYear()
     private var mMonth: Int = TimeUtil.getMonth()
     private var mDay: Int = TimeUtil.getDay()
+
+    // 添加备注弹窗
+    private var mAddBillNoteDialog: AddBillNoteDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +118,18 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
                 )
             datePickerDialog.show()
         }
+
+        add_bill_activity_note_tv.setOnClickListener {
+            // 弹出添加备注弹窗
+            mAddBillNoteDialog = AddBillNoteDialog(this)
+            mAddBillNoteDialog?.setTypeInfo(mSelectedType!!)
+            mAddBillNoteDialog?.setAddBillNoteListener(object : IAddBillNoteListener {
+                override fun onAddBillNote(billNote: BillNoteBean) {
+                    add_bill_activity_note_tv.text = billNote.title
+                }
+            })
+            mAddBillNoteDialog?.show()
+        }
     }
 
     private fun initView() {
@@ -123,11 +141,16 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
     }
 
     private fun addBill() {
+        val money = add_bill_activity_input_view.getBillMoney()!!.toFloat()
+        if (money == 0f) {
+            Toast.makeText(this, "金额不能为0哦~", Toast.LENGTH_SHORT).show()
+            return
+        }
         // 添加记账数据
         val bill = BillInfo(
             0,
-            add_bill_activity_note_et.text.trim().toString(),
-            add_bill_activity_input_view.getBillMoney()!!.toFloat(),
+            add_bill_activity_note_tv.text.toString(),
+            money,
             mSelectedType!!.id,
             mSelectedType,
             mSelectedTime

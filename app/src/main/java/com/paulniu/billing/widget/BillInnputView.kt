@@ -34,6 +34,9 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
      * 添加文本内容，此处只能是自定义软键盘输入的内容
      */
     fun changeMoney(money: String) {
+        if(TextUtils.equals(money,"-") || TextUtils.equals(money,"+") || TextUtils.equals(money,"@")){
+            return
+        }
         if (TextUtils.equals(money, "删除")) {
             // 删除一个字符
             if (bill_input_view_input_tv.text.length > 1) {
