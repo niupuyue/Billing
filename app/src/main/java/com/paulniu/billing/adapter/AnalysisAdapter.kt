@@ -24,12 +24,11 @@ import kotlinx.android.synthetic.main.view_analysis_item.view.*
 class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAnalysisItemListener) :
     RecyclerView.Adapter<AnalysisAdapter.AnalysisItemViewHolder>() {
 
-    private var mContext: Context? = null
+    private var mContext: Context = context
     private var mAnalysis: List<TypeInfo>? = null
     private var mListener: IAnalysisItemListener? = null
 
     init {
-        mContext = context
         mAnalysis = analysis
         mListener = listener
     }
@@ -44,20 +43,20 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
         return if (null == mAnalysis || mAnalysis?.isEmpty() == true) {
             0
         } else {
-            mAnalysis!!.size
+            mAnalysis?.size?:0
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AnalysisItemViewHolder, position: Int) {
         if (null != mAnalysis && mAnalysis?.isNotEmpty() == true) {
-            val tempData = mAnalysis!![position]
-            Glide.with(mContext!!).load(tempData.iconRes).error(R.mipmap.app_icon_food)
+            val tempData = mAnalysis?.get(position)
+            Glide.with(mContext).load(tempData?.iconRes).error(R.mipmap.app_icon_food)
                 .into(holder.analysisItemIcon)
-            holder.analysisItemTitle.text = tempData.title
+            holder.analysisItemTitle.text = tempData?.title
             holder.analysisItemPercent.text =
-                "${String.format("%.2f", (tempData.precent ?: 0f) * 100)}%"
-            holder.analysisItemMoney.text = "￥ ${tempData.totalMoney ?: 0f}"
+                "${String.format("%.2f", (tempData?.precent ?: 0f) * 100)}%"
+            holder.analysisItemMoney.text = "￥ ${tempData?.totalMoney ?: 0f}"
             holder.analysisItemContainer.setOnClickListener {
                 mListener?.onTypeItemClick(tempData)
             }

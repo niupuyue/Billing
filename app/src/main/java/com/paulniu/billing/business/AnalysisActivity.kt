@@ -1,8 +1,11 @@
 package com.paulniu.billing.business
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,6 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.util.DensityUtil
 import com.paulniu.bill_base_lib.util.ResourceUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
@@ -45,20 +49,25 @@ class AnalysisActivity : AppCompatActivity(), IAnalysisItemListener {
     // 在规定时间内的金额总数
     private var totalMoney: Float? = null
 
+    private var mSelectedCurrentTime = System.currentTimeMillis()
+
     // 开始的时间
-    private var startTime: Long = TimeUtil.getMonthStartAndEnd()[0]
+    private var startTime: Long = TimeUtil.getMonthStartAndEnd(mSelectedCurrentTime)[0]
 
     // 结束的时间
-    private var endTime: Long = TimeUtil.getMonthStartAndEnd()[1]
+    private var endTime: Long = TimeUtil.getMonthStartAndEnd(mSelectedCurrentTime)[1]
 
     private var mAnalysisAdapter: AnalysisAdapter? = null
 
     private var mAnalysisListData = ArrayList<TypeInfo>()
 
+    private var mYear = TimeUtil.getYearMonthDayByTime()[0]
+    private var mMonth = TimeUtil.getYearMonthDayByTime()[1]
+    private var mDay = TimeUtil.getYearMonthDayByTime()[2]
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analysis)
-
         initView()
         initData()
         initBarChart()
@@ -78,44 +87,89 @@ class AnalysisActivity : AppCompatActivity(), IAnalysisItemListener {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         supportActionBar?.setCustomView(analysisToolbarLayout, analysisToolbarParams)
+        // 点击返回按钮
         analysisToolbarLayout.analysis_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
+        // 点击切换月份
+        analysisToolbarLayout.analysis_toolbar_month.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                this,
+                R.style.AppThemeDatePicker,
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    mYear = year
+                    mMonth = month
+                    mDay = dayOfMonth
+                    mSelectedCurrentTime = TimeUtil.getCurrentTimeByDay(year, month, dayOfMonth)
+                    // 重新计算开始时间和结束时间
+                    startTime = TimeUtil.getMonthStartAndEnd(mSelectedCurrentTime)[0]
+                    endTime = TimeUtil.getMonthStartAndEnd(mSelectedCurrentTime)[1]
+                    // 重新加载数据
+                    initData()
+                    initBarChart()
+                    formatBarData()
+                    // 重新显示右上角月份
+                    analysisToolbarLayout.analysis_toolbar_month.text = formatMonthText()
+                },
+                mYear,
+                mMonth,
+                mDay
+            )
+            datePickerDialog.show()
+        }
+
+        // 如果当前的时间在当前月份里，则显示本月，其他时候显示年份和月份
+        analysisToolbarLayout.analysis_toolbar_month.text = formatMonthText()
     }
 
     /**
      * 初始化数据，默认显示当前月份的统计数据
      */
     private fun initData() {
+        sortMoneyDatas.clear()
         mAnalysisListData.clear()
         billDatas.clear()
-        billDatas.addAll(BillSource.queryBillByMonth())
-        // 获取当前月份的总金额
-        totalMoney = BillCalculateSource.sumMoneyByTimes(startTime, endTime)
-        // 获取所有的类型集合
-        mTypeInfos.clear()
-        mTypeInfos.addAll(TypeSource.queryTypes())
-        // 计算每个类型所对应的金额
-        mTypeInfos.forEach { typeInfo ->
-            val sortBean = BillCalculateSource.sumMoneyByTimesType(startTime, endTime, typeInfo.id)
-            sortMoneyDatas.add(sortBean ?: 0f)
-        }
-        if (mTypeInfos.size == sortMoneyDatas.size) {
-            // 如果类型的数量和计算出来的类型数量相等，则开始封装barChart数据
-            mTypeInfos.forEachIndexed { index, value ->
-                val typeTotalMoney = sortMoneyDatas[index]
-                value.totalMoney = typeTotalMoney
-                value.precent = typeTotalMoney / (totalMoney ?: 1f)
-                // 填充recyclerview的数据
-                if (typeTotalMoney != 0f) {
-                    mAnalysisListData.add(value)
-                }
+        billDatas.addAll(BillSource.queryBillByMonth(mSelectedCurrentTime))
+        if (billDatas.isEmpty()) {
+            analysis_activity_empty_rl.visibility = View.VISIBLE
+            analysis_activity_container_ll.visibility = View.GONE
+        } else {
+            analysis_activity_empty_rl.visibility = View.GONE
+            analysis_activity_container_ll.visibility = View.VISIBLE
+            // 获取当前月份的总金额
+            totalMoney = BillCalculateSource.sumMoneyByTimes(startTime, endTime)
+            // 获取所有的类型集合
+            mTypeInfos.clear()
+            mTypeInfos.addAll(TypeSource.queryTypes())
+            // 计算每个类型所对应的金额
+            mTypeInfos.forEach { typeInfo ->
+                val sortBean =
+                    BillCalculateSource.sumMoneyByTimesType(startTime, endTime, typeInfo.id)
+                sortMoneyDatas.add(sortBean ?: 0f)
             }
-            // 循环完成之后，typesData就是所有类型和对应类型的钱数
+            if (mTypeInfos.size == sortMoneyDatas.size) {
+                // 如果类型的数量和计算出来的类型数量相等，则开始封装barChart数据
+                mTypeInfos.forEachIndexed { index, value ->
+                    val typeTotalMoney = sortMoneyDatas[index]
+                    value.totalMoney = typeTotalMoney
+                    value.precent = typeTotalMoney / (totalMoney ?: 1f)
+                    // 填充recyclerview的数据
+                    if (typeTotalMoney != 0f) {
+                        mAnalysisListData.add(value)
+                    }
+                }
+                // 循环完成之后，typesData就是所有类型和对应类型的钱数
+                analysis_activity_empty_rl.visibility = View.GONE
+                analysis_activity_container_ll.visibility = View.VISIBLE
+            } else {
+                analysis_activity_empty_rl.visibility = View.VISIBLE
+                analysis_activity_container_ll.visibility = View.GONE
+            }
         }
     }
 
     private fun initBarChart() {
+        analysis_activity_barchart.clear()
         analysis_activity_barchart.setTouchEnabled(false)
         analysis_activity_barchart.isDragEnabled = false
         analysis_activity_barchart.isScaleXEnabled = false
@@ -241,7 +295,18 @@ class AnalysisActivity : AppCompatActivity(), IAnalysisItemListener {
         return maxMoney
     }
 
-    override fun onTypeItemClick(type: TypeInfo) {
+    private fun formatMonthText(): String? {
+        return if (TimeUtil.formatTimeToCurrentMonth(mSelectedCurrentTime)) {
+            getString(R.string.analysis_activity_top_current_monty)
+        } else {
+            TimeUtil.formatTimeToString(
+                mSelectedCurrentTime,
+                TimeConstant.TYPE_YEAR_MONTH_XIEGANG
+            )
+        }
+    }
+
+    override fun onTypeItemClick(type: TypeInfo?) {
 
     }
 

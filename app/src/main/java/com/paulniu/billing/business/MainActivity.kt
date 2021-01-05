@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     override fun onBackPressed() {
         // 需要处理侧滑窗口
         super.onBackPressed()
+
     }
 
     override fun onClick(position: Int) {
@@ -136,34 +137,34 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setBackgroundDrawable(null)
-        val main_toolbar_layout = layoutInflater.inflate(R.layout.view_main_mytoolbar, null)
-        val main_toolbar_params = ActionBar.LayoutParams(
+        val mainToolbarLayout = layoutInflater.inflate(R.layout.view_main_mytoolbar, null)
+        val mainToolbarParams = ActionBar.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        supportActionBar?.setCustomView(main_toolbar_layout, main_toolbar_params)
-        main_toolbar_layout.main_activity_toolbar_date_tv.setOnClickListener {
+        supportActionBar?.setCustomView(mainToolbarLayout, mainToolbarParams)
+        mainToolbarLayout.main_activity_toolbar_date_tv.setOnClickListener {
             // 重新选择月份
-            val datePickerDialog =
-                DatePickerDialog(
-                    this, R.style.AppThemeDatePicker,
-                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                        mYear = year
-                        mMonth = month
-                        mDay = dayOfMonth
-                        mSelectedTime = TimeUtil.getCurrentTimeByDay(year, month, dayOfMonth)
-                        // 重新加载数据
-                        initData()
-                        main_toolbar_layout.main_activity_toolbar_date_tv.text =
-                            TimeUtil.formatTimeToString(
-                                mSelectedTime,
-                                TimeConstant.TYPE_YEAR_MONTH_XIEGANG
-                            )
-                    }, mYear, mMonth, mDay
-                )
+            val datePickerDialog = DatePickerDialog(
+                this,
+                R.style.AppThemeDatePicker,
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    mYear = year
+                    mMonth = month
+                    mDay = dayOfMonth
+                    mSelectedTime = TimeUtil.getCurrentTimeByDay(year, month, dayOfMonth)
+                    // 重新加载数据
+                    initData()
+                    val dataTxt = TimeUtil.formatTimeToString(
+                        mSelectedTime,
+                        TimeConstant.TYPE_YEAR_MONTH_XIEGANG
+                    )
+                    mainToolbarLayout.main_activity_toolbar_date_tv.text = dataTxt
+                }, mYear, mMonth, mDay
+            )
             datePickerDialog.show()
         }
-        main_toolbar_layout.main_activity_toolbar_date_tv.text =
+        mainToolbarLayout.main_activity_toolbar_date_tv.text =
             TimeUtil.formatTimeToString(mSelectedTime, TimeConstant.TYPE_YEAR_MONTH_XIEGANG)
 
         val mNavHeader = main_activity_nav_view.getHeaderView(0)

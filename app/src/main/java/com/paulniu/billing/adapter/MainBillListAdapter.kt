@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.paulniu.bill_base_lib.util.ResourceUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
@@ -67,15 +68,15 @@ class MainBillListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (null == mBillList || mBillList!!.isEmpty()) {
+        return if (null == mBillList || mBillList?.isEmpty() == true) {
             0
         } else {
-            mBillList!!.size
+            mBillList?.size ?: 0
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mBillList!![position].id <= 0) {
+        return if (mBillList?.get(position)?.id ?: 0 <= 0) {
             TYPE_DATE
         } else {
             TYPE_BILL
@@ -88,8 +89,8 @@ class MainBillListAdapter(
             mainBill?.run {
                 if (null != typeInfo) {
                     holder.billListItemIcon.background =
-                        ContextCompat.getDrawable(mContext!!, typeInfo!!.iconRes!!)
-                    holder.billListItemTitle.text = typeInfo!!.title
+                        ResourceUtil.getDrawable(typeInfo?.iconRes ?: R.mipmap.app_icon_food)
+                    holder.billListItemTitle.text = typeInfo?.title
                 }
                 holder.billListItemMoney.text = money.toString()
                 holder.billListItemNote.text = title

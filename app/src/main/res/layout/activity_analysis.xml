@@ -27,33 +27,75 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:overScrollMode="never">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/analysis_activity_barchart"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/analysis_activity_recyclerview"
+            <LinearLayout
+                android:id="@+id/analysis_activity_container_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="8"
-                tools:listitem="@layout/view_analysis_item" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/analysis_activity_barchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/analysis_activity_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="8"
+                    tools:listitem="@layout/view_analysis_item" />
+
+            </LinearLayout>
+
+            <!-- 数据为空 -->
+            <RelativeLayout
+                android:id="@+id/analysis_activity_empty_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="300dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/app_icon_analysis_empty" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/analysis_activity_empty_data"
+                        android:textColor="@color/color_626669"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
 

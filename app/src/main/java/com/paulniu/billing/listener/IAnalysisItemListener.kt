@@ -10,6 +10,6 @@ import com.paulniu.bill_data_lib.bean.TypeInfo
  */
 interface IAnalysisItemListener {
 
-    fun onTypeItemClick(type:TypeInfo)
+    fun onTypeItemClick(type:TypeInfo?)
 
 }

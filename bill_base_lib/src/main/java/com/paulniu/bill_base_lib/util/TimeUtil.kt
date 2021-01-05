@@ -188,4 +188,19 @@ object TimeUtil {
         }
     }
 
+    /**
+     * 根据传递过来的时间，判断该时间是否在当前月
+     */
+    fun formatTimeToCurrentMonth(time: Long = System.currentTimeMillis()): Boolean {
+        val mCurrentTime = System.currentTimeMillis()
+        if (time == mCurrentTime) {
+            return true
+        }
+        val times = getMonthStartAndEnd(mCurrentTime)
+        if (time <= times[1] && time >= times[0]) {
+            return true
+        }
+        return false
+    }
+
 }

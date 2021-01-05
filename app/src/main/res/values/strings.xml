@@ -46,6 +46,9 @@
     <string name="edit_nickname_motto_dialog_confirm">确定</string>
     <string name="edit_nickname_motto_dialog_cancel">取消</string>
 
+    <!-- 报表页面 -->
+    <string name="analysis_activity_top_current_monty">当月</string>
+    <string name="analysis_activity_empty_data">数据为空，快去记账吧~</string>
 
     <!-- 自定义view -->
     <string name="input_view_bill_money">￥</string>
