@@ -36,7 +36,11 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
      */
     @SuppressLint("SetTextI18n")
     fun changeMoney(money: String) {
-        if(TextUtils.equals(money,"-") || TextUtils.equals(money,"+") || TextUtils.equals(money,"@")){
+        if (TextUtils.equals(money, "-") || TextUtils.equals(money, "+") || TextUtils.equals(
+                money,
+                "@"
+            )
+        ) {
             return
         }
         if (TextUtils.equals(money, "删除")) {
@@ -49,11 +53,15 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
             } else {
                 bill_input_view_input_tv.text = "0"
             }
-        } else if (bill_input_view_input_tv.text.length == 1 && TextUtils.equals(bill_input_view_input_tv.text,"0") && !TextUtils.equals(bill_input_view_input_tv.text,".")) {
+        } else if (bill_input_view_input_tv.text.length == 1 && TextUtils.equals(
+                bill_input_view_input_tv.text,
+                "0"
+            ) && !TextUtils.equals(bill_input_view_input_tv.text, ".")
+        ) {
             bill_input_view_input_tv.text = money
-        } else if (bill_input_view_input_tv.text.contains(".") && TextUtils.equals(money,".")){
+        } else if (bill_input_view_input_tv.text.contains(".") && TextUtils.equals(money, ".")) {
             // 不用执行任何操作
-        }else {
+        } else {
             val curValue = bill_input_view_input_tv.text.toString()
             bill_input_view_input_tv.text = curValue + money
         }

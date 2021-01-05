@@ -43,4 +43,7 @@ dependencies {
 
     // MPAndroidChart
     api 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //阴影控件
+    api 'com.github.lihangleo2:ShadowLayout:3.1.6'
 }

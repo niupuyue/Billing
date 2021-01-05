@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_FAFAFA">
 
     <RelativeLayout
         android:id="@+id/add_bill_activity_top_rl"
@@ -19,8 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:background="@mipmap/app_icon_back_black" />
+            android:layout_marginStart="15dp"
+            android:background="@mipmap/app_icon_back_black"
+            android:contentDescription="back" />
 
         <TextView
             android:id="@+id/add_bill_activity_time_tv"
@@ -28,8 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
-            android:drawableRight="@mipmap/app_icon_triangle_down"
+            android:drawableEnd="@mipmap/app_icon_triangle_down"
             android:drawablePadding="5dp"
             android:text=""
             android:textColor="@color/color_212121"
@@ -40,11 +41,10 @@
             android:id="@+id/add_bill_activity_submit_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/shape_add_bill_submit_bg"
+            android:background="@drawable/shape_add_bill_submit_selecotr_bg"
             android:paddingLeft="15dp"
             android:paddingTop="8dp"
             android:paddingRight="15dp"
@@ -97,10 +97,10 @@
                     android:id="@+id/add_bill_activity_note_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:drawableLeft="@mipmap/app_icon_note"
+                    android:drawableStart="@mipmap/app_icon_note"
                     android:drawablePadding="8dp"
                     android:text="@string/add_bill_activity_note"
                     android:textColor="@color/color_212121"
@@ -113,7 +113,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toRightOf="@id/add_bill_activity_note_title_tv"
+                    android:layout_toEndOf="@id/add_bill_activity_note_title_tv"
                     android:background="@null"
                     android:hint="@string/add_bill_activity_note_hint"
                     android:maxLength="20"

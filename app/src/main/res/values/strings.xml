@@ -46,4 +46,9 @@
     <string name="edit_nickname_motto_dialog_confirm">确定</string>
     <string name="edit_nickname_motto_dialog_cancel">取消</string>
 
+
+    <!-- 自定义view -->
+    <string name="input_view_bill_money">￥</string>
+    <string name="input_view_bill_number_normal">0</string>
+
 </resources>
