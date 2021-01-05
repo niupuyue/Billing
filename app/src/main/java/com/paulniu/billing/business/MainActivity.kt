@@ -1,5 +1,6 @@
 package com.paulniu.billing.business
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun initView() {
         setSupportActionBar(main_activity_toolbar)
         // 设置侧滑窗口和toolbar的联动
@@ -235,7 +237,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
         if (mBillList.isEmpty()) {
             return
         }
-        var insertArray = ArrayList<Int>()
+        val insertArray = ArrayList<Int>()
         // 主要思路：判断当前日期和下一个日期是否是同一天，如果是同一天，则不添加，否则就添加
         var index = 0
         insertArray.add(index)

@@ -1,5 +1,6 @@
 package com.paulniu.billing.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,7 @@ class AddBillAdapter(
         this.mListener = listener
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddBillViewHolder {
         return AddBillViewHolder(
             LayoutInflater.from(context).inflate(R.layout.view_add_bill_item, null, false)

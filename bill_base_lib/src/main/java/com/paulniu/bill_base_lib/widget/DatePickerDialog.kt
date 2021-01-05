@@ -75,12 +75,12 @@ class DatePickerDialog(
             mDatePickerStart.init(year, monthOfYear, dayOfMonth, this)
     }
 
-    public fun getDatePickerStart(): DatePicker {
+    fun getDatePickerStart(): DatePicker {
         return mDatePickerStart;
     }
 
 
-    public fun updateStartDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    fun updateStartDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
         mDatePickerStart.updateDate(year, monthOfYear, dayOfMonth);
     }
 

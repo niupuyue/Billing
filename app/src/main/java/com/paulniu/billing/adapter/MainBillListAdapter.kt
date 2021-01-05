@@ -125,7 +125,5 @@ class MainBillListAdapter(
         var billListTitleMoney: TextView = view.bill_list_item_title_money_tv
     }
 
-    open class BillListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    }
+    open class BillListViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

@@ -1,5 +1,6 @@
 package com.paulniu.billing.business
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.TextView
@@ -38,6 +39,7 @@ class PersonActivity : AppCompatActivity() {
         initListener()
     }
 
+    @SuppressLint("InflateParams")
     private fun initView() {
         setSupportActionBar(person_activity_toolbar)
         // 设置toolbar的自定义样式

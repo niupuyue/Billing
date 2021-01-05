@@ -1,5 +1,6 @@
 package com.paulniu.billing.business
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
@@ -64,6 +65,7 @@ class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAna
         initListener()
     }
 
+    @SuppressLint("InflateParams")
     private fun initView() {
         setSupportActionBar(analysis_activity_toolbar)
         // 设置toolbar的自定义样式
@@ -148,7 +150,12 @@ class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAna
         if (typesData.size == sortMoneyDatas.size) {
             typesData.forEachIndexed { index, typeInfo ->
                 if (sortMoneyDatas[index] > 0) {
-                    pieDatas.add(PieEntry(sortMoneyDatas[index], typeInfo.title + " ${sortMoneyDatas[index]}"))
+                    pieDatas.add(
+                        PieEntry(
+                            sortMoneyDatas[index],
+                            typeInfo.title + " ${sortMoneyDatas[index]}"
+                        )
+                    )
                     typesData[index].totalMoney = sortMoneyDatas[index]
                     typesData[index].precent = sortMoneyDatas[index] / totalMoney!!
                     mAnalysisListData.add(typesData[index])

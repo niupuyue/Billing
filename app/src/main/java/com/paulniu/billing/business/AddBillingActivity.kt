@@ -105,7 +105,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
             val datePickerDialog =
                 DatePickerDialog(
                     this, R.style.AppThemeDatePicker,
-                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                         mYear = year
                         mMonth = month
                         mDay = dayOfMonth

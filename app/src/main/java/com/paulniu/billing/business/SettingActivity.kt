@@ -1,5 +1,6 @@
 package com.paulniu.billing.business
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
@@ -26,6 +27,7 @@ class SettingActivity : AppCompatActivity() {
         initData()
     }
 
+    @SuppressLint("InflateParams")
     private fun initView() {
         setSupportActionBar(setting_activity_toolbar)
         // 设置toolbar的自定义样式

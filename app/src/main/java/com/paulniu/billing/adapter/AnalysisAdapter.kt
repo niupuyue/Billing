@@ -1,5 +1,6 @@
 package com.paulniu.billing.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,7 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AnalysisItemViewHolder, position: Int) {
         if (null != mAnalysis && mAnalysis!!.size > 0) {
             val tempData = mAnalysis!![position]

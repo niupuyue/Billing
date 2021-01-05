@@ -1,5 +1,6 @@
 package com.paulniu.billing.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
@@ -33,6 +34,7 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
     /**
      * 添加文本内容，此处只能是自定义软键盘输入的内容
      */
+    @SuppressLint("SetTextI18n")
     fun changeMoney(money: String) {
         if(TextUtils.equals(money,"-") || TextUtils.equals(money,"+") || TextUtils.equals(money,"@")){
             return
@@ -65,7 +67,7 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
             bill_input_view_title_tv.text = title
         }
         if (null != iconRes && iconRes > 0) {
-            bill_input_view_icon_iv.background = ContextCompat.getDrawable(context, iconRes!!)
+            bill_input_view_icon_iv.background = ContextCompat.getDrawable(context, iconRes)
         }
     }
 
