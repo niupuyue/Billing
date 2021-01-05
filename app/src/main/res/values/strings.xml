@@ -1,5 +1,7 @@
 <resources>
 
+    <!-- 全局String变量 -->
+
     <!-- 隐私权县弹窗 -->
     <string name="privacy_dialog_title">至，亲爱的用户</string>
     <string name="privacy_dialog_subtitle">感谢您使用IYing记账助手。</string>

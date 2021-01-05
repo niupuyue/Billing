@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/color_53B3F4"
         app:srcCompat="@mipmap/app_icon_add_white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

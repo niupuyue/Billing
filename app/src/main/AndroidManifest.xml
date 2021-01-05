@@ -35,7 +35,7 @@
         <!-- 主页面 -->
         <activity
             android:name=".business.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeWhiteNoTitle" />
         <!-- 添加账单页面 -->
         <activity
             android:name=".business.AddBillingActivity"
