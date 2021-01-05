@@ -41,7 +41,7 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
     }
 
     override fun getItemCount(): Int {
-        return if (null == mAnalysis || mAnalysis!!.size <= 0) {
+        return if (null == mAnalysis || mAnalysis?.isEmpty() == true) {
             0
         } else {
             mAnalysis!!.size
@@ -50,7 +50,7 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AnalysisItemViewHolder, position: Int) {
-        if (null != mAnalysis && mAnalysis!!.size > 0) {
+        if (null != mAnalysis && mAnalysis?.isNotEmpty() == true) {
             val tempData = mAnalysis!![position]
             Glide.with(mContext!!).load(tempData.iconRes).error(R.mipmap.app_icon_food)
                 .into(holder.analysisItemIcon)

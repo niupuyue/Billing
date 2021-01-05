@@ -1,23 +1,22 @@
 package com.paulniu.billing.business
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.paulniu.bill_base_lib.util.DensityUtil
+import com.paulniu.bill_base_lib.util.ResourceUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.bill_data_lib.bean.TypeInfo
@@ -36,12 +35,12 @@ import kotlinx.android.synthetic.main.view_analysis_toolbar.view.*
  * time:2020/6/7 6:11 PM
  * desc: 报表分析页面
  */
-class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAnalysisItemListener {
+class AnalysisActivity : AppCompatActivity(), IAnalysisItemListener {
 
-    private val pieDatas = ArrayList<PieEntry>()
     private val billDatas = ArrayList<BillInfo>()
-    private val typesData = ArrayList<TypeInfo>()
     private val sortMoneyDatas = ArrayList<Float>()
+    private val mTypeInfos = ArrayList<TypeInfo>()
+    private val mBarChartList = ArrayList<BarEntry>()
 
     // 在规定时间内的金额总数
     private var totalMoney: Float? = null
@@ -62,7 +61,8 @@ class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAna
 
         initView()
         initData()
-        initListener()
+        initBarChart()
+        formatBarData()
     }
 
     @SuppressLint("InflateParams")
@@ -72,56 +72,15 @@ class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAna
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setBackgroundDrawable(null)
-        val analysis_toolbar_layout = layoutInflater.inflate(R.layout.view_analysis_toolbar, null)
-        val analysis_toolbar_params = ActionBar.LayoutParams(
+        val analysisToolbarLayout = layoutInflater.inflate(R.layout.view_analysis_toolbar, null)
+        val analysisToolbarParams = ActionBar.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        supportActionBar?.setCustomView(analysis_toolbar_layout, analysis_toolbar_params)
-        analysis_toolbar_layout.analysis_toolbar_back_iv.setOnClickListener {
+        supportActionBar?.setCustomView(analysisToolbarLayout, analysisToolbarParams)
+        analysisToolbarLayout.analysis_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
-
-        // 使用百分比数据
-        analysis_activity_piechart.setUsePercentValues(true)
-        // 是否启用详细描述
-        analysis_activity_piechart.description.isEnabled = false
-        // 设置上下左右的偏移量
-//        analysis_activity_piechart.setExtraOffsets(5f,5f,10f,10f)
-        // 设置摩擦系数
-        analysis_activity_piechart.dragDecelerationFrictionCoef = 0.95f
-        // 设置饼状图上文字的样式
-//        analysis_activity_piechart.setCenterTextTypeface()
-        // 设置饼状图中心圆样式可见
-        analysis_activity_piechart.isDrawHoleEnabled = true
-        // 设置中心圆背景颜色为白色
-        analysis_activity_piechart.setHoleColor(Color.WHITE)
-        // 设置分割线颜色为白色
-        analysis_activity_piechart.setTransparentCircleColor(Color.WHITE)
-        analysis_activity_piechart.setTransparentCircleAlpha(110)
-        // 设置中心圆的半径
-        analysis_activity_piechart.holeRadius = 30f
-        // 设置外部半径
-        analysis_activity_piechart.transparentCircleRadius = 51f
-        // 设置中心文字可见
-        analysis_activity_piechart.setDrawCenterText(true)
-        // 设置旋转角度
-        analysis_activity_piechart.rotationAngle = 0f
-        // 设置是否可以进行旋转操作
-        analysis_activity_piechart.isRotationEnabled = false
-        // 设置高亮的图标是否可以点击
-        analysis_activity_piechart.isHighlightPerTapEnabled = true
-        // 添加监听事件
-        analysis_activity_piechart.setOnChartValueSelectedListener(this)
-        // 设置Y轴动画
-        analysis_activity_piechart.animateY(1400, Easing.EaseInOutQuad)
-
-        val l: Legend = analysis_activity_piechart.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
-        l.isEnabled = false
     }
 
     /**
@@ -134,99 +93,155 @@ class AnalysisActivity : AppCompatActivity(), OnChartValueSelectedListener, IAna
         // 获取当前月份的总金额
         totalMoney = BillCalculateSource.sumMoneyByTimes(startTime, endTime)
         // 获取所有的类型集合
-        typesData.clear()
-        typesData.addAll(TypeSource.queryTypes()!!)
+        mTypeInfos.clear()
+        mTypeInfos.addAll(TypeSource.queryTypes())
         // 计算每个类型所对应的金额
-        typesData.forEachIndexed { _, typeInfo ->
-            sortMoneyDatas.add(
-                BillCalculateSource.sumMoneyByTimesType(
-                    startTime,
-                    endTime,
-                    typeInfo.id
-                ) ?: 0.0f
-            )
+        mTypeInfos.forEach { typeInfo ->
+            val sortBean = BillCalculateSource.sumMoneyByTimesType(startTime, endTime, typeInfo.id)
+            sortMoneyDatas.add(sortBean ?: 0f)
         }
-        // 初始化pieData
-        if (typesData.size == sortMoneyDatas.size) {
-            typesData.forEachIndexed { index, typeInfo ->
-                if (sortMoneyDatas[index] > 0) {
-                    pieDatas.add(
-                        PieEntry(
-                            sortMoneyDatas[index],
-                            typeInfo.title + " ${sortMoneyDatas[index]}"
-                        )
-                    )
-                    typesData[index].totalMoney = sortMoneyDatas[index]
-                    typesData[index].precent = sortMoneyDatas[index] / totalMoney!!
-                    mAnalysisListData.add(typesData[index])
+        if (mTypeInfos.size == sortMoneyDatas.size) {
+            // 如果类型的数量和计算出来的类型数量相等，则开始封装barChart数据
+            mTypeInfos.forEachIndexed { index, value ->
+                val typeTotalMoney = sortMoneyDatas[index]
+                value.totalMoney = typeTotalMoney
+                value.precent = typeTotalMoney / (totalMoney ?: 1f)
+                // 填充recyclerview的数据
+                if (typeTotalMoney != 0f) {
+                    mAnalysisListData.add(value)
                 }
             }
-            val pieDataSet = PieDataSet(pieDatas, "账单统计")
-            pieDataSet.sliceSpace = 3f
-            pieDataSet.selectionShift = 5f
-            pieDataSet.colors = setPieDataClolrs()
-
-            pieDataSet.valueLinePart1OffsetPercentage = 80f
-            pieDataSet.valueLinePart1Length = 0.2f
-            pieDataSet.valueLinePart2Length = 0.4f
-            pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-
-            // 设置横杠指示不显示
-            pieDataSet.setDrawValues(false)
-
-            val data = PieData(pieDataSet)
-            data.setValueFormatter(PercentFormatter())
-            data.setValueTextSize(11f)
-            data.setValueTextColor(Color.BLACK)
-            analysis_activity_piechart.data = data
-            analysis_activity_piechart.highlightValues(null)
-            analysis_activity_piechart.invalidate()
-
-            analysis_activity_recyclerview.layoutManager = LinearLayoutManager(this)
-            mAnalysisAdapter = AnalysisAdapter(this, mAnalysisListData, this)
-            analysis_activity_recyclerview.adapter = mAnalysisAdapter
-        } else {
-            Toast.makeText(this, "数据错误，暂时无法执行统计操作", Toast.LENGTH_SHORT).show()
+            // 循环完成之后，typesData就是所有类型和对应类型的钱数
         }
     }
 
-    private fun initListener() {
+    private fun initBarChart() {
+        analysis_activity_barchart.setTouchEnabled(false)
+        analysis_activity_barchart.isDragEnabled = false
+        analysis_activity_barchart.isScaleXEnabled = false
+        analysis_activity_barchart.description.isEnabled = false
+
+        // 设置legend
+        val legend = analysis_activity_barchart.legend
+        legend.textColor = ResourceUtil.getColor(R.color.color_A2A6B8)
+        // 设置排列方法
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        // 设置大小
+        legend.formSize = DensityUtil.dp2px(3f).toFloat()
+
+        // 不需要显示标题
+        analysis_activity_barchart.description.isEnabled = false
+
+        analysis_activity_barchart.extraTopOffset = 15f
+
+        analysis_activity_barchart.setFitBars(true)
+
+        // 设置x轴
+        val x = analysis_activity_barchart.xAxis
+        x.position = XAxis.XAxisPosition.BOTTOM
+        // 绘制靠近x轴第一条线的颜色
+        x.axisLineColor = ResourceUtil.getColor(R.color.color_D8D8D8)
+        // 设置x轴字体大小和颜色
+        x.textColor = ResourceUtil.getColor(R.color.color_A2A6B8)
+        // 设置x轴文字居中显示
+//        x.setCenterAxisLabels(true)
+        x.setDrawGridLines(false)
+        x.granularity = 1f
+        // 设置x轴中数据格式化
+        x.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val curIndex = value.toInt()
+                return if (curIndex >= 0 && curIndex < mAnalysisListData.size) {
+                    mAnalysisListData[(value.toInt())].title ?: "未知类型"
+                } else {
+                    ""
+                }
+            }
+        }
+
+        // 设置y轴
+        val yl = analysis_activity_barchart.axisLeft
+        val yr = analysis_activity_barchart.axisRight
+        yr.isEnabled = false
+        // 是否绘制最上面的标签
+        yl.setDrawTopYLabelEntry(true)
+        // 设置左侧y轴的最大值和最小值
+        yl.axisMinimum = 0f
+        yl.axisMaximum = ((calculMaxData() / 100).toInt() + 1) * 100f
+        // 设置左侧y轴标签设置的位置
+        yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        // 设置是否显示左侧y轴最近的一条线
+        yl.setDrawAxisLine(false)
+        // 设置是否绘制横向网格
+        yl.setDrawGridLines(true)
+        // 设置绘制横向网格的颜色
+        yl.gridColor = ResourceUtil.getColor(R.color.color_F2F2F2)
+        // 设置绘制横向网格的宽度
+        yl.gridLineWidth = DensityUtil.dp2px(0.5f).toFloat()
+        yl.granularity = ((calculMaxData() / 5).toInt() / 100) * 100f
+    }
+
+    private fun formatBarData() {
+        mBarChartList.clear()
+        mAnalysisListData.forEachIndexed { index, typeInfo ->
+            val money = typeInfo.totalMoney
+            val barEntry = BarEntry(index.toFloat(), money ?: 0f)
+            mBarChartList.add(barEntry)
+        }
+        val barDataSet: BarDataSet?
+        if (analysis_activity_barchart.data != null && analysis_activity_barchart.data.dataSetCount > 0) {
+            barDataSet = analysis_activity_barchart.data.getDataSetByIndex(0) as BarDataSet?
+            barDataSet?.values = mBarChartList
+            analysis_activity_barchart.data.notifyDataChanged()
+            analysis_activity_barchart.notifyDataSetChanged()
+        } else {
+            barDataSet = BarDataSet(mBarChartList, "月份统计")
+            barDataSet.setDrawIcons(false)
+
+            val startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light)
+            val startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light)
+            val startColor3 = ContextCompat.getColor(this, android.R.color.holo_purple)
+            val startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light)
+            val startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light)
+
+            val colorsLists = ArrayList<Int>()
+            colorsLists.add(startColor1)
+            colorsLists.add(startColor2)
+            colorsLists.add(startColor3)
+            colorsLists.add(startColor4)
+            colorsLists.add(startColor5)
+
+            barDataSet.colors = colorsLists
+            val dataSets = ArrayList<IBarDataSet>()
+            dataSets.add(barDataSet)
+            val barData = BarData(dataSets)
+            barData.setValueTextSize(10f)
+            barData.barWidth = 0.9f
+            analysis_activity_barchart.data = barData
+        }
+
+        // 显示recyclerview
+        analysis_activity_recyclerview.layoutManager = LinearLayoutManager(this)
+        mAnalysisAdapter = AnalysisAdapter(this, mAnalysisListData, this)
+        analysis_activity_recyclerview.adapter = mAnalysisAdapter
 
     }
 
     /**
-     * 设置颜色集合
+     * 计算类型中的最大值
      */
-    private fun setPieDataClolrs(): List<Int> {
-
-        // add a lot of colors
-        val colors = java.util.ArrayList<Int>()
-
-        for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
-
-        colors.add(ColorTemplate.getHoloBlue())
-
-        return colors
-    }
-
-    override fun onNothingSelected() {
-        // 没有选中
-    }
-
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        //选中了某一个对象
+    private fun calculMaxData(): Float {
+        var maxMoney = 0f
+        mAnalysisListData.forEach { typeInfo ->
+            if (maxMoney < (typeInfo.totalMoney ?: 0f)) {
+                maxMoney = typeInfo.totalMoney ?: 0f
+            }
+        }
+        return maxMoney
     }
 
     override fun onTypeItemClick(type: TypeInfo) {
-        // 选择具体的某一个类型，点击进入类型统计页面
 
     }
 

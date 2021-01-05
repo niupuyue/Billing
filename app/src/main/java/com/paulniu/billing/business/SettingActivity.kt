@@ -34,13 +34,13 @@ class SettingActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setBackgroundDrawable(null)
-        val setting_toolbar_layout = layoutInflater.inflate(R.layout.view_setting_toolbar, null)
-        val setting_toolbar_params = ActionBar.LayoutParams(
+        val settingToolbarLayout = layoutInflater.inflate(R.layout.view_setting_toolbar, null)
+        val settingToolbarParams = ActionBar.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        supportActionBar?.setCustomView(setting_toolbar_layout, setting_toolbar_params)
-        setting_toolbar_layout.setting_toolbar_back_iv.setOnClickListener {
+        supportActionBar?.setCustomView(settingToolbarLayout, settingToolbarParams)
+        settingToolbarLayout.setting_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
     }

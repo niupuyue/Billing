@@ -20,7 +20,7 @@ object TypeSource {
     @JvmStatic
     fun clearTypes() {
         val types = queryTypes()
-        if (null != types && types.isNotEmpty()) {
+        if (types.isNotEmpty()) {
             types.forEach { value ->
                 AppDataBase.getInstance(App.getAppContext()).typeInfoDao().delete(value)
             }
@@ -53,7 +53,7 @@ object TypeSource {
      * 获取所有的类型
      */
     @JvmStatic
-    fun queryTypes(): List<TypeInfo>? {
+    fun queryTypes(): List<TypeInfo> {
         return AppDataBase.getInstance(App.getAppContext()).typeInfoDao().queryTypeInfos()
     }
 

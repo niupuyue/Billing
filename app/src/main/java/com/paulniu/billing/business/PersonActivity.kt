@@ -7,16 +7,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.paulniu.bill_base_lib.event.ChangeUserNameEvent
 import com.paulniu.bill_base_lib.util.SPUtil
 import com.paulniu.billing.Constant
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IEditNickNameAndMottoListener
 import com.paulniu.billing.widget.dialog.EditNickNameAndMottoDialog
 import kotlinx.android.synthetic.main.activity_person.*
-import kotlinx.android.synthetic.main.view_analysis_toolbar.view.*
 import kotlinx.android.synthetic.main.view_person_toolbar.view.*
-import org.greenrobot.eventbus.EventBus
 
 /**
  * @author:Niu Puyue
@@ -46,16 +43,16 @@ class PersonActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setBackgroundDrawable(null)
-        val person_toolbar_layout = layoutInflater.inflate(R.layout.view_person_toolbar, null)
-        val person_toolbar_params = ActionBar.LayoutParams(
+        val personToolbarLayout = layoutInflater.inflate(R.layout.view_person_toolbar, null)
+        val personToolbarParams = ActionBar.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        supportActionBar?.setCustomView(person_toolbar_layout, person_toolbar_params)
-        person_toolbar_layout.person_toolbar_back_iv.setOnClickListener {
+        supportActionBar?.setCustomView(personToolbarLayout, personToolbarParams)
+        personToolbarLayout.person_toolbar_back_iv.setOnClickListener {
             onBackPressed()
         }
-        title_name = person_toolbar_layout.person_toolbar_title_tv
+        title_name = personToolbarLayout.person_toolbar_title_tv
 
 
     }
@@ -79,12 +76,19 @@ class PersonActivity : AppCompatActivity() {
     private fun initListener() {
         person_activity_motto_tv.setOnClickListener {
             // 点击编辑签名
-            val mottoDialog = EditNickNameAndMottoDialog(this,EditNickNameAndMottoDialog.TYPE_MOTTO,object :IEditNickNameAndMottoListener{
-                override fun onChange(type: Int, value: String) {
-                    Toast.makeText(this@PersonActivity,getString(R.string.person_activity_set_motto_success),Toast.LENGTH_SHORT).show()
-                    person_activity_motto_tv.text = value
-                }
-            })
+            val mottoDialog = EditNickNameAndMottoDialog(
+                this,
+                EditNickNameAndMottoDialog.TYPE_MOTTO,
+                object : IEditNickNameAndMottoListener {
+                    override fun onChange(type: Int, value: String) {
+                        Toast.makeText(
+                            this@PersonActivity,
+                            getString(R.string.person_activity_set_motto_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        person_activity_motto_tv.text = value
+                    }
+                })
             mottoDialog.show()
         }
 
@@ -104,14 +108,21 @@ class PersonActivity : AppCompatActivity() {
         }
     }
 
-    private fun editNickname(){
-        val nickNameDialog = EditNickNameAndMottoDialog(this,EditNickNameAndMottoDialog.TYPE_NICKNAME,object :IEditNickNameAndMottoListener{
-            override fun onChange(type: Int, value: String) {
-                Toast.makeText(this@PersonActivity,getString(R.string.person_activity_set_nickname_success),Toast.LENGTH_SHORT).show()
-                person_activity_username_tv.text = value
-                title_name.text = value
-            }
-        })
+    private fun editNickname() {
+        val nickNameDialog = EditNickNameAndMottoDialog(
+            this,
+            EditNickNameAndMottoDialog.TYPE_NICKNAME,
+            object : IEditNickNameAndMottoListener {
+                override fun onChange(type: Int, value: String) {
+                    Toast.makeText(
+                        this@PersonActivity,
+                        getString(R.string.person_activity_set_nickname_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    person_activity_username_tv.text = value
+                    title_name.text = value
+                }
+            })
         nickNameDialog.show()
     }
 
