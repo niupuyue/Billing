@@ -22,7 +22,7 @@ abstract class TypeInfoDao {
     abstract fun delete(typeInfo: TypeInfo)
 
     fun addOrUpdate(typeInfo: TypeInfo) {
-        val oldTypeInfo = queryTypeInfoById(typeInfo.id!!)
+        val oldTypeInfo = queryTypeInfoById(typeInfo.id)
         if (null == oldTypeInfo) {
             insert(typeInfo)
         } else {

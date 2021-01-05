@@ -1,5 +1,6 @@
 package com.paulniu.bill_base_lib.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
@@ -17,7 +18,7 @@ import android.widget.ImageView
 class CircleImage constructor(context: Context, attr: AttributeSet) :
     androidx.appcompat.widget.AppCompatImageView(context, attr) {
 
-    private var mPaint: Paint? = null
+    private lateinit var mPaint: Paint
 
     private var mRadius: Int? = null
 
@@ -31,6 +32,7 @@ class CircleImage constructor(context: Context, attr: AttributeSet) :
         setMeasuredDimension(size, size)
     }
 
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
         mPaint = Paint()
         val bitmap = drawableToBitmap(drawable)
@@ -38,14 +40,19 @@ class CircleImage constructor(context: Context, attr: AttributeSet) :
         // 初始化BitmapShader，传入bitmap对象
         val bitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         // 计算缩放比例
-        mScale = (mRadius!! * 2f) / bitmap.height.coerceAtMost(bitmap.width)
+        mScale = ((mRadius ?: 0) * 2f) / bitmap.height.coerceAtMost(bitmap.width)
 
         val matrix = Matrix()
-        matrix.setScale(mScale!!, mScale!!)
+        matrix.setScale(mScale ?: 0f, mScale ?: 0f)
         bitmapShader.setLocalMatrix(matrix)
 
-        mPaint?.shader = bitmapShader
-        canvas?.drawCircle(mRadius!!.toFloat(), mRadius!!.toFloat(), mRadius!!.toFloat(), mPaint!!)
+        mPaint.shader = bitmapShader
+        canvas?.drawCircle(
+            mRadius?.toFloat() ?: 0f,
+            mRadius?.toFloat() ?: 0f,
+            mRadius?.toFloat() ?: 0f,
+            mPaint
+        )
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {

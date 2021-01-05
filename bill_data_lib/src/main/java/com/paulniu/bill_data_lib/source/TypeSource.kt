@@ -32,7 +32,7 @@ object TypeSource {
      */
     @JvmStatic
     fun addOrUpdate(typeInfo: TypeInfo) {
-        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes?:0 <= 0) {
             return
         }
         AppDataBase.getInstance(App.getAppContext()).typeInfoDao().addOrUpdate(typeInfo)
@@ -43,7 +43,7 @@ object TypeSource {
      */
     @JvmStatic
     fun addTypeInfo(typeInfo: TypeInfo) {
-        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes!! <= 0) {
+        if (typeInfo.id < 0 || TextUtils.isEmpty(typeInfo.title) || typeInfo.iconRes?:0 <= 0) {
             return
         }
         AppDataBase.getInstance(App.getAppContext()).typeInfoDao().insert(typeInfo)

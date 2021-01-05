@@ -16,7 +16,7 @@ object StringUtil {
      * 清除字符串中的空格
      */
     fun formatStringWithoutSpace(value: String?): String {
-        if (value?.isEmpty()!!) return ""
+        if (value?.isEmpty() == true) return ""
         val p: Pattern = Pattern.compile("\\s*|\t|\r|\n")
         val m: Matcher = p.matcher(value)
         return m.replaceAll("")

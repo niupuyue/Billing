@@ -71,9 +71,7 @@ class WelcomeActivity : AppCompatActivity() {
         })
         textAnimator.repeatCount = 0
         // 判断用户是否是第一次启动应用，如果是第一次启动应用，则先显示弹窗，然后再开启动画
-        if (!SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)
-                ?.getBoolean(Constant.SP_KEY_SHOW_PRIVACY_DIALOG, false)!!
-        ) {
+        if (SPUtil.getInstance(Constant.SP_APP_BASE_FILENAME)?.getBoolean(Constant.SP_KEY_SHOW_PRIVACY_DIALOG, false) == false) {
             val privacyDialog =
                 PrivacyDialog(this)
             privacyDialog.setPrivacyDialogListener(object : IPrivacyDialogListener {

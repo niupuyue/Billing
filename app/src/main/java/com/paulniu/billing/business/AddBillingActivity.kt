@@ -126,7 +126,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         add_bill_activity_note_tv.setOnClickListener {
             // 弹出添加备注弹窗
             mAddBillNoteDialog = AddBillNoteDialog(this)
-            mAddBillNoteDialog?.setTypeInfo(mSelectedType!!)
+            mAddBillNoteDialog?.setTypeInfo(mSelectedType)
             mAddBillNoteDialog?.setAddBillNoteListener(object : IAddBillNoteListener {
                 override fun onAddBillNote(billNote: BillNoteBean) {
                     add_bill_activity_note_tv.text = billNote.title
@@ -151,7 +151,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
     }
 
     private fun addBill() {
-        val money = add_bill_activity_input_view.getBillMoney()!!.toFloat()
+        val money = add_bill_activity_input_view.getBillMoney()?.toFloat()
         if (money == 0f) {
             Toast.makeText(this, "金额不能为0哦~", Toast.LENGTH_SHORT).show()
             return
@@ -160,8 +160,8 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         val bill = BillInfo(
             0,
             add_bill_activity_note_tv.text.toString(),
-            money,
-            mSelectedType!!.id,
+            money?:0f,
+            mSelectedType?.id,
             mSelectedType,
             mSelectedTime
         )

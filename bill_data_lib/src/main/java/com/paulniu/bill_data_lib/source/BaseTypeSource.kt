@@ -17,8 +17,8 @@ object BaseTypeSource {
      * 插入或者更新BaseType
      */
     @JvmStatic
-    fun addOrUpdate(baseType: BaseType){
-        if (baseType.id!! < 0 || TextUtils.isEmpty(baseType.title)){
+    fun addOrUpdate(baseType: BaseType) {
+        if (baseType.id ?: 0 < 0 || TextUtils.isEmpty(baseType.title)) {
             return
         }
         AppDataBase.getInstance(App.getAppContext()).baseTypeDao().addOrUpdate(baseType)
@@ -28,7 +28,7 @@ object BaseTypeSource {
      * 查询所有的baseType
      */
     @JvmStatic
-    fun  queryBaseTypes():List<BaseType>?{
+    fun queryBaseTypes(): List<BaseType> {
         return AppDataBase.getInstance(App.getAppContext()).baseTypeDao().getBaseTypes()
     }
 

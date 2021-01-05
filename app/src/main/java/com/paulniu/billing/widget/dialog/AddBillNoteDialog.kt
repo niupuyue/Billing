@@ -107,7 +107,7 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
      */
     private fun initData() {
         mBillNoteList.clear()
-        mBillNoteList.addAll(BillNoteSource.getBillNotesByType(mTypeInfo!!.id) as ArrayList<BillNoteBean>)
+        mBillNoteList.addAll(BillNoteSource.getBillNotesByType(mTypeInfo?.id?:0) as ArrayList<BillNoteBean>)
         val linearLayout = LinearLayoutManager(context)
         linearLayout.orientation = LinearLayoutManager.HORIZONTAL
         add_bill_note_dialog_rv.layoutManager = linearLayout
@@ -119,7 +119,7 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
         this.mListener = listener
     }
 
-    fun setTypeInfo(typeInfo: TypeInfo) {
+    fun setTypeInfo(typeInfo: TypeInfo?) {
         this.mTypeInfo = typeInfo
     }
 

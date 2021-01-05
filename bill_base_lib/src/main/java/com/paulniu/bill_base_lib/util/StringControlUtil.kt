@@ -36,12 +36,12 @@ object StringControlUtil {
             val textBuilder = SpannableStringBuilder(text)
             var lis: List<Int>
             for (i in hotWordModel.indices) {
-                lis = getStrIndex(text.toString() + "", hotWordModel[i].text!!)
+                lis = getStrIndex(text.toString() + "", hotWordModel[i].text?:"")
                 for (j in lis.indices) {
                     textBuilder.setSpan(
                         SpanClickable(listener, i, hotWordModel[i].isUnderline, hotWordModel[i].color, hotWordModel[i].isBold, hotWordModel[i].textSize),
                         lis[j],
-                        lis[j] + hotWordModel[i].text!!.length,
+                        lis[j] + (hotWordModel[i].text?.length?:0),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
             }
@@ -63,7 +63,7 @@ object StringControlUtil {
      * @param listener        关键字点击回调
      */
     fun setHotWordsText(context: Context?, tv: TextView?, text: CharSequence, arrHotWords: Array<String>?, colorResourceID: Int, isBold: Boolean, isUnderline: Boolean, textSize: Float, listener: ITextViewClickListener?) {
-        if (tv == null || TextUtils.isEmpty(text) || null == arrHotWords) {
+        if (tv == null || TextUtils.isEmpty(text) || null == arrHotWords || context == null) {
             return
         }
         try {
@@ -73,7 +73,7 @@ object StringControlUtil {
                 spanModel = SpanModel()
                 spanModel.text = arrHotWord
                 spanModel.isUnderline = isUnderline
-                spanModel.color = ContextCompat.getColor(context!!, colorResourceID)
+                spanModel.color = ContextCompat.getColor(context, colorResourceID)
                 spanModel.isBold = isBold
                 spanModel.textSize = textSize
                 hotWordModels.add(spanModel)

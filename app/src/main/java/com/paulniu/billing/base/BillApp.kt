@@ -28,12 +28,12 @@ class BillApp : App() {
      */
     private fun initDatabase() {
         // 查询数据库中type是否为null，并且是第一次安装
-        if (null == BaseTypeSource.queryBaseTypes() || BaseTypeSource.queryBaseTypes()!!.isEmpty()){
+        if (BaseTypeSource.queryBaseTypes().isEmpty()){
             BaseTypeSource.addOrUpdate(BaseType(0,"收入"))
             BaseTypeSource.addOrUpdate(BaseType(1,"支出"))
         }
 
-        if(null == TypeSource.queryTypeInfosByBaseType(1) || TypeSource.queryTypeInfosByBaseType(1)!!.isEmpty() || MetaDataUtil.shouldUpdateTypes){
+        if(null == TypeSource.queryTypeInfosByBaseType(1) || TypeSource.queryTypeInfosByBaseType(1)?.isEmpty() == true || MetaDataUtil.shouldUpdateTypes){
             TypeSource.clearTypes()
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_food, "餐饮", 1,BaseType(1,"支出")))
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_book, "书籍", 1,BaseType(1,"支出")))
@@ -60,7 +60,7 @@ class BillApp : App() {
             TypeSource.addOrUpdate(TypeInfo(0, R.mipmap.app_icon_work, "办公", 1,BaseType(1,"支出")))
         }
 
-        if (null == TypeSource.queryTypeInfosByBaseType(0) || TypeSource.queryTypeInfosByBaseType(0)!!.isEmpty()){
+        if (null == TypeSource.queryTypeInfosByBaseType(0) || TypeSource.queryTypeInfosByBaseType(0)?.isEmpty() == true){
             TypeSource.addOrUpdate(TypeInfo(0,R.mipmap.app_icon_financial,"理财",0,BaseType(0,"收入")))
         }
     }

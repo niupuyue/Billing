@@ -23,13 +23,13 @@ abstract class BaseTypeDao {
     abstract fun delete(baseType: BaseType)
 
     @Query("select * from BaseType")
-    abstract fun getBaseTypes(): List<BaseType>?
+    abstract fun getBaseTypes(): List<BaseType>
 
     @Query("select * from basetype where id =:id")
     abstract fun getBaseTypeById(id: Int?): BaseType?
 
     fun addOrUpdate(baseType: BaseType) {
-        if (baseType.id!! < 0 || TextUtils.isEmpty(baseType.title)) {
+        if (baseType.id?:0 < 0 || TextUtils.isEmpty(baseType.title)) {
             return
         }
         val oldBaseType = getBaseTypeById(baseType.id)
