@@ -1,14 +1,18 @@
 package com.paulniu.billing.business
 
 import android.app.DatePickerDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.TextClock
+import android.view.Gravity
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.paulniu.bill_base_lib.constant.TimeConstant
 import com.paulniu.bill_base_lib.event.AddBillSuccessEvent
+import com.paulniu.bill_base_lib.util.DensityUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.bill_data_lib.bean.BillNoteBean
@@ -129,6 +133,12 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
                 }
             })
             mAddBillNoteDialog?.show()
+            // 设置弹窗的宽度
+            val layoutParams = mAddBillNoteDialog?.window?.attributes
+            layoutParams?.width = DensityUtil.dp2px(DensityUtil.getScreenWidth(this) * 0.5f)
+            layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
+            layoutParams?.gravity = Gravity.CENTER
+            mAddBillNoteDialog?.window?.attributes = layoutParams
         }
     }
 

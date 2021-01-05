@@ -28,7 +28,6 @@ class BillInnputView constructor(context: Context, attrs: AttributeSet) :
     init {
         // 引入布局
         LayoutInflater.from(context).inflate(R.layout.view_bill_input, this, true)
-
     }
 
     /**

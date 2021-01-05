@@ -6,16 +6,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.paulniu.bill_base_lib.util.DensityUtil
+import com.paulniu.bill_base_lib.util.ResourceUtil
 import com.paulniu.bill_data_lib.bean.BillNoteBean
 import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.bill_data_lib.source.BillNoteSource
@@ -23,7 +22,6 @@ import com.paulniu.billing.R
 import com.paulniu.billing.listener.IAddBillNoteListener
 import kotlinx.android.synthetic.main.view_add_bill_note_item.view.*
 import kotlinx.android.synthetic.main.view_dialog_add_bill_note.*
-
 
 /**
  * @author:Niu Puyue
@@ -42,10 +40,6 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_dialog_add_bill_note)
-
-        // 设置弹窗样式
-        window?.setGravity(Gravity.CENTER)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         add_bill_note_dialog_confirm_tv.setOnClickListener {
             if (isShowing) {
@@ -83,7 +77,6 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
         val imm: InputMethodManager? =
             getSystemService(context, InputMethodManager::class.java)
         //如果window上view获取焦点 && view不为空
-        //如果window上view获取焦点 && view不为空
         if (imm!!.isActive && currentFocus != null) {
             //拿到view的token 不为空
             if (currentFocus!!.windowToken != null) {
@@ -95,6 +88,18 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
             }
         }
         super.dismiss()
+    }
+
+    fun showDialog(){
+        show()
+        // 设置弹窗样式
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // 设置弹窗的宽度
+        val layoutParams = window?.attributes
+        layoutParams?.width = DensityUtil.dp2px(DensityUtil.getScreenWidth(context) * 0.7f)
+        layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams?.gravity = Gravity.CENTER
+        window?.attributes = layoutParams
     }
 
     /**
@@ -149,10 +154,12 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
             holder.addBillNoteItemTitle.text = mBillNoteList[position].title
             if (mBillNoteList[position].isSelected) {
                 holder.addBillNoteItemTitle.background =
-                    mContext.resources.getDrawable(R.drawable.shape_add_bill_note_title_select_bg)
+                    ResourceUtil.getDrawable(R.drawable.shape_add_bill_note_title_select_bg)
+                holder.addBillNoteItemTitle.setTextColor(ResourceUtil.getColor(R.color.white))
             } else {
                 holder.addBillNoteItemTitle.background =
-                    mContext.resources.getDrawable(R.drawable.shape_add_bill_note_title_unselect_bg)
+                    ResourceUtil.getDrawable(R.drawable.shape_add_bill_note_title_unselect_bg)
+                holder.addBillNoteItemTitle.setTextColor(ResourceUtil.getColor(R.color.color_212121))
             }
         }
 
