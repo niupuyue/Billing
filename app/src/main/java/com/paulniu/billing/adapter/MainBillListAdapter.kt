@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.paulniu.bill_base_lib.util.ResourceUtil
 import com.paulniu.bill_base_lib.util.TimeUtil
 import com.paulniu.bill_data_lib.bean.BillInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IMainBillListListener
+import com.paulniu.billing.util.ResUtil
 import kotlinx.android.synthetic.main.main_activity_bill_list_item.view.*
 import kotlinx.android.synthetic.main.main_activity_bill_list_item_title.view.*
 
@@ -29,7 +29,7 @@ class MainBillListAdapter(
     listener: IMainBillListListener
 ) : RecyclerView.Adapter<MainBillListAdapter.BillListViewHolder>() {
 
-    private var mContext: Context? = null
+    private var mContext: Context = context
     private var mBillList: ArrayList<BillInfo>? = null
     private var mListener: IMainBillListListener? = null
 
@@ -39,7 +39,6 @@ class MainBillListAdapter(
     }
 
     init {
-        this.mContext = context
         this.mBillList = bills
         this.mListener = listener
     }
@@ -89,7 +88,7 @@ class MainBillListAdapter(
             mainBill?.run {
                 if (null != typeInfo) {
                     holder.billListItemIcon.background =
-                        ResourceUtil.getDrawable(typeInfo?.iconRes ?: R.mipmap.app_icon_food)
+                        ResourceUtil.getDrawable(ResUtil.mipmapResource("app_icon_" + typeInfo?.iconRes,mContext))
                     holder.billListItemTitle.text = typeInfo?.title
                 }
                 holder.billListItemMoney.text = money.toString()

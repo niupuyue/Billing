@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.paulniu.bill_data_lib.bean.TypeInfo
 import com.paulniu.billing.R
 import com.paulniu.billing.listener.IAnalysisItemListener
+import com.paulniu.billing.util.ResUtil
 import kotlinx.android.synthetic.main.view_analysis_item.view.*
 
 /**
@@ -51,7 +52,7 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
     override fun onBindViewHolder(holder: AnalysisItemViewHolder, position: Int) {
         if (null != mAnalysis && mAnalysis?.isNotEmpty() == true) {
             val tempData = mAnalysis?.get(position)
-            Glide.with(mContext).load(tempData?.iconRes).error(R.mipmap.app_icon_food)
+            Glide.with(mContext).load(ResUtil.mipmapResource("app_icon_" + tempData?.iconRes,mContext)).error(R.mipmap.app_icon_1)
                 .into(holder.analysisItemIcon)
             holder.analysisItemTitle.text = tempData?.title
             holder.analysisItemPercent.text =

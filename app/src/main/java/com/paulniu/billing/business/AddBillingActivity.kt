@@ -25,6 +25,7 @@ import com.paulniu.billing.database.BillSource
 import com.paulniu.billing.listener.IAddBillNoteListener
 import com.paulniu.billing.listener.IAddBillSelectListener
 import com.paulniu.billing.listener.ISoftKeyboardListener
+import com.paulniu.billing.util.ResUtil
 import com.paulniu.billing.widget.dialog.AddBillNoteDialog
 import kotlinx.android.synthetic.main.activity_add_billing.*
 import org.greenrobot.eventbus.EventBus
@@ -70,7 +71,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         mTypeDatas[position].isSelected = true
         mAdapter?.notifyDataSetChanged()
         // 设置输入框中的内容也发生改变
-        add_bill_activity_input_view.setBillTitle(mSelectedType?.iconRes, mSelectedType?.title)
+        add_bill_activity_input_view.setBillTitle(ResUtil.mipmapResource("app_icon_" + mSelectedType?.iconRes,this), mSelectedType?.title)
     }
 
     override fun onSelect(value: SoftKeyboardAdapter.KeyboardData) {
@@ -89,7 +90,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         mTypeDatas[0].isSelected = true
         mSelectedType = mTypeDatas[0]
         // 设置输入框初始样式
-        add_bill_activity_input_view.setBillTitle(mSelectedType?.iconRes, mSelectedType?.title)
+        add_bill_activity_input_view.setBillTitle(ResUtil.mipmapResource("app_icon_" + mSelectedType?.iconRes,this), mSelectedType?.title)
         // 根据当前时间填充文本
         add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(
             System.currentTimeMillis(),

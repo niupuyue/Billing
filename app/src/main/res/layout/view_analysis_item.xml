@@ -13,7 +13,7 @@
         android:id="@+id/analysis_item_view_icon_iv"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@mipmap/app_icon_food"
+        android:background="@mipmap/app_icon_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

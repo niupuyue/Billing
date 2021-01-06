@@ -23,7 +23,7 @@
             android:id="@+id/view_add_bill_item_icon_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@mipmap/app_icon_food" />
+            android:background="@mipmap/app_icon_1" />
 
         <TextView
             android:id="@+id/view_add_bill_item_title_tv"
