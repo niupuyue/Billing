@@ -134,12 +134,6 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
                 }
             })
             mAddBillNoteDialog?.show()
-            // 设置弹窗的宽度
-            val layoutParams = mAddBillNoteDialog?.window?.attributes
-            layoutParams?.width = DensityUtil.dp2px(DensityUtil.getScreenWidth(this) * 0.5f)
-            layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
-            layoutParams?.gravity = Gravity.CENTER
-            mAddBillNoteDialog?.window?.attributes = layoutParams
         }
     }
 
