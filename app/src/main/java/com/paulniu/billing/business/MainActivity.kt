@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity(), IMainBillListListener {
     override fun onDestroy() {
         super.onDestroy()
         eventBus.removeStickyEvent(AddBillSuccessEvent::class.java)
+        eventBus.removeStickyEvent(ChangeUserNameEvent::class.java)
         eventBus.unregister(this)
     }
 
