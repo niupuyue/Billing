@@ -62,6 +62,10 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
                 mListener?.onTypeItemClick(tempData)
             }
         }
+        // 点击事件
+        holder.analysisItemContainer.setOnClickListener {
+
+        }
     }
 
     class AnalysisItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
