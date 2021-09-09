@@ -88,7 +88,12 @@ class MainBillListAdapter(
             mainBill?.run {
                 if (null != typeInfo) {
                     holder.billListItemIcon.background =
-                        ResourceUtil.getDrawable(ResUtil.mipmapResource("app_icon_" + typeInfo?.iconRes,mContext))
+                        ResourceUtil.getDrawable(
+                            ResUtil.mipmapResource(
+                                "app_icon_" + typeInfo?.iconRes,
+                                mContext
+                            )
+                        )
                     holder.billListItemTitle.text = typeInfo?.title
                 }
                 holder.billListItemMoney.text = money.toString()

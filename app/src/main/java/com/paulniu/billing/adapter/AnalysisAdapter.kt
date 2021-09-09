@@ -44,7 +44,7 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
         return if (null == mAnalysis || mAnalysis?.isEmpty() == true) {
             0
         } else {
-            mAnalysis?.size?:0
+            mAnalysis?.size ?: 0
         }
     }
 
@@ -52,7 +52,9 @@ class AnalysisAdapter(context: Context, analysis: List<TypeInfo>, listener: IAna
     override fun onBindViewHolder(holder: AnalysisItemViewHolder, position: Int) {
         if (null != mAnalysis && mAnalysis?.isNotEmpty() == true) {
             val tempData = mAnalysis?.get(position)
-            Glide.with(mContext).load(ResUtil.mipmapResource("app_icon_" + tempData?.iconRes,mContext)).error(R.mipmap.app_icon_1)
+            Glide.with(mContext)
+                .load(ResUtil.mipmapResource("app_icon_" + tempData?.iconRes, mContext))
+                .error(R.mipmap.app_icon_1)
                 .into(holder.analysisItemIcon)
             holder.analysisItemTitle.text = tempData?.title
             holder.analysisItemPercent.text =

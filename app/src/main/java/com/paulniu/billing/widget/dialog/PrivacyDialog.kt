@@ -49,7 +49,7 @@ class PrivacyDialog constructor(context: Context) : Dialog(context) {
 
         privacy_dialog_disagree_tv.setOnClickListener {
             // 点击不同意按钮
-            if (isShowing){
+            if (isShowing) {
                 dismiss()
             }
             mListener?.onDisagree()
@@ -79,7 +79,7 @@ class PrivacyDialog constructor(context: Context) : Dialog(context) {
             })
     }
 
-    fun setPrivacyDialogListener(listener:IPrivacyDialogListener){
+    fun setPrivacyDialogListener(listener: IPrivacyDialogListener) {
         this.mListener = listener
     }
 

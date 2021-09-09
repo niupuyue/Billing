@@ -51,7 +51,12 @@ class AddBillAdapter(
     override fun onBindViewHolder(holder: AddBillViewHolder, position: Int) {
         holder.addBillItemTitle.text = mTypes[position].title
         holder.addBillItemIcon.background =
-            ResourceUtil.getDrawable(ResUtil.mipmapResource("app_icon_" + mTypes[position].iconRes,context))
+            ResourceUtil.getDrawable(
+                ResUtil.mipmapResource(
+                    "app_icon_" + mTypes[position].iconRes,
+                    context
+                )
+            )
 
         holder.addBillItemContainer.background =
             ResourceUtil.getDrawable(if (mTypes[position].isSelected) R.drawable.add_bill_item_selected_bg else R.drawable.add_bill_item_unselected_bg)

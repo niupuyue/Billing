@@ -27,8 +27,8 @@ class AnalysisDetailActivity : AppCompatActivity() {
         }
     }
 
-    private var mTypeId:Int? = null
-    private var mBillTime:Long? = null
+    private var mTypeId: Int? = null
+    private var mBillTime: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +38,16 @@ class AnalysisDetailActivity : AppCompatActivity() {
         initBaseListener()
     }
 
-    private fun initExtraData(){
-        mTypeId = intent.getIntExtra(BILL_TYPE,0)
-        mBillTime = intent.getLongExtra(BILL_TIME,System.currentTimeMillis())
+    private fun initExtraData() {
+        mTypeId = intent.getIntExtra(BILL_TYPE, 0)
+        mBillTime = intent.getLongExtra(BILL_TIME, System.currentTimeMillis())
     }
 
-    private fun initBaseView(){
+    private fun initBaseView() {
 
     }
 
-    private fun initBaseListener(){
+    private fun initBaseListener() {
 
     }
 

@@ -69,7 +69,7 @@ class SoftKeyboardAdapter(context: Context, selectListener: ISoftKeyboardSelectL
     override fun onBindViewHolder(holder: SoftKeyboardViewHolder, position: Int) {
         val keyboardData = mKeyboardList[position]
         holder.softKeyboardItemTitl.text = keyboardData.value
-        if (position == 15){
+        if (position == 15) {
             // 最后一个数据，改变背景颜色
 
         }

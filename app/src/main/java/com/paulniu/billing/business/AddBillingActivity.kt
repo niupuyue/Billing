@@ -71,7 +71,12 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         mTypeDatas[position].isSelected = true
         mAdapter?.notifyDataSetChanged()
         // 设置输入框中的内容也发生改变
-        add_bill_activity_input_view.setBillTitle(ResUtil.mipmapResource("app_icon_" + mSelectedType?.iconRes,this), mSelectedType?.title)
+        add_bill_activity_input_view.setBillTitle(
+            ResUtil.mipmapResource(
+                "app_icon_" + mSelectedType?.iconRes,
+                this
+            ), mSelectedType?.title
+        )
     }
 
     override fun onSelect(value: SoftKeyboardAdapter.KeyboardData) {
@@ -90,7 +95,12 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         mTypeDatas[0].isSelected = true
         mSelectedType = mTypeDatas[0]
         // 设置输入框初始样式
-        add_bill_activity_input_view.setBillTitle(ResUtil.mipmapResource("app_icon_" + mSelectedType?.iconRes,this), mSelectedType?.title)
+        add_bill_activity_input_view.setBillTitle(
+            ResUtil.mipmapResource(
+                "app_icon_" + mSelectedType?.iconRes,
+                this
+            ), mSelectedType?.title
+        )
         // 根据当前时间填充文本
         add_bill_activity_time_tv.text = TimeUtil.formatTimeToString(
             System.currentTimeMillis(),
@@ -155,7 +165,7 @@ class AddBillingActivity : AppCompatActivity(), IAddBillSelectListener, ISoftKey
         val bill = BillInfo(
             0,
             add_bill_activity_note_tv.text.toString(),
-            money?:0f,
+            money ?: 0f,
             mSelectedType?.id,
             mSelectedType,
             mSelectedTime

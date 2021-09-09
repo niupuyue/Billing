@@ -90,7 +90,7 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
         super.dismiss()
     }
 
-    fun showDialog(){
+    fun showDialog() {
         show()
         // 设置弹窗样式
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -107,7 +107,11 @@ class AddBillNoteDialog(context: Context) : Dialog(context) {
      */
     private fun initData() {
         mBillNoteList.clear()
-        mBillNoteList.addAll(BillNoteSource.getBillNotesByType(mTypeInfo?.id?:0) as ArrayList<BillNoteBean>)
+        mBillNoteList.addAll(
+            BillNoteSource.getBillNotesByType(
+                mTypeInfo?.id ?: 0
+            ) as ArrayList<BillNoteBean>
+        )
         val linearLayout = LinearLayoutManager(context)
         linearLayout.orientation = LinearLayoutManager.HORIZONTAL
         add_bill_note_dialog_rv.layoutManager = linearLayout

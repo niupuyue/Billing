@@ -16,5 +16,5 @@ object MetaDataUtil {
     ).metaData
 
     // 获取是否需要重新添加types的类型(有时候重新编译会导致类型的资源id发生改变，最好每次更新时重新设置一次)
-    val shouldUpdateTypes: Boolean = metaData.getBoolean("update_database_type",false)
+    val shouldUpdateTypes: Boolean = metaData.getBoolean("update_database_type", false)
 }
