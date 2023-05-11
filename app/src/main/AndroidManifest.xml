@@ -23,6 +23,7 @@
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|smallestScreenSize|touchscreen"
             android:hardwareAccelerated="true"
+            android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeWhiteNoTitle"
             android:windowSoftInputMode="adjustPan">
